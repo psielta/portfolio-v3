@@ -10,10 +10,42 @@
 
 html,
 body {
-  @apply bg-white dark:bg-slate-900;
+  @apply bg-white dark:bg-black;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
+  }
+}
+
+/* Fundo de estrelas para tema espacial */
+.dark body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background:
+    radial-gradient(2px 2px at 20% 30%, white, transparent),
+    radial-gradient(2px 2px at 60% 70%, white, transparent),
+    radial-gradient(1px 1px at 50% 50%, white, transparent),
+    radial-gradient(1px 1px at 80% 10%, white, transparent),
+    radial-gradient(2px 2px at 90% 60%, white, transparent),
+    radial-gradient(1px 1px at 33% 90%, white, transparent),
+    radial-gradient(1px 1px at 15% 80%, white, transparent);
+  background-size: 200% 200%;
+  background-position: 0% 0%, 40% 40%, 130% 130%, 70% 70%, 0% 130%, 130% 0%, 50% 100%;
+  opacity: 0.3;
+  animation: starfield 120s linear infinite;
+}
+
+@keyframes starfield {
+  0%, 100% {
+    background-position: 0% 0%, 40% 40%, 130% 130%, 70% 70%, 0% 130%, 130% 0%, 50% 100%;
+  }
+  50% {
+    background-position: 100% 100%, 60% 60%, 30% 30%, 90% 90%, 100% 30%, 30% 100%, 70% 50%;
   }
 }
 
@@ -53,38 +85,38 @@ body {
 }
 
 .dark {
-  /* Slate theme - matching orbital viewer colors - mais escuro e azulado */
-  --background: oklch(0.209 0.015 255.508); /* slate-900 - rgb(15, 23, 42) */
-  --foreground: oklch(0.898 0.005 247.896); /* slate-200 - mais suave */
-  --card: oklch(0.250 0.016 255.8); /* levemente mais claro que 900, bem azulado */
-  --card-foreground: oklch(0.898 0.005 247.896); /* slate-200 */
-  --popover: oklch(0.250 0.016 255.8);
-  --popover-foreground: oklch(0.898 0.005 247.896);
-  --primary: oklch(0.599 0.153 252.417); /* cornflowerblue - igual ao gráfico */
-  --primary-foreground: oklch(0.975 0.003 247.858); /* slate-50 */
-  --secondary: oklch(0.290 0.016 256.2); /* ainda mais escuro, azulado */
-  --secondary-foreground: oklch(0.898 0.005 247.896);
-  --muted: oklch(0.290 0.016 256.2);
-  --muted-foreground: oklch(0.636 0.014 256.328); /* slate-400 */
-  --accent: oklch(0.290 0.016 256.2);
-  --accent-foreground: oklch(0.898 0.005 247.896);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.382 0.020 257.5); /* slate-700 com mais saturação azul */
-  --input: oklch(0.290 0.016 256.2); /* escuro, azulado */
-  --ring: oklch(0.599 0.153 252.417); /* cornflowerblue */
-  --chart-1: oklch(0.599 0.153 252.417);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.250 0.016 255.8);
-  --sidebar-foreground: oklch(0.898 0.005 247.896);
-  --sidebar-primary: oklch(0.599 0.153 252.417);
-  --sidebar-primary-foreground: oklch(0.975 0.003 247.858);
-  --sidebar-accent: oklch(0.290 0.016 256.2);
-  --sidebar-accent-foreground: oklch(0.898 0.005 247.896);
-  --sidebar-border: oklch(0.382 0.020 257.5);
-  --sidebar-ring: oklch(0.599 0.153 252.417);
+  /* Tema espacial - matching solar system viewer */
+  --background: oklch(0 0 0); /* Preto puro como o espaço */
+  --foreground: oklch(0.95 0 0); /* Branco quase puro */
+  --card: oklch(0.15 0 0); /* Cinza muito escuro semi-transparente */
+  --card-foreground: oklch(0.95 0 0);
+  --popover: oklch(0.10 0 0); /* Quase preto */
+  --popover-foreground: oklch(0.95 0 0);
+  --primary: oklch(0.6 0.15 250); /* Azul vibrante estilo planeta */
+  --primary-foreground: oklch(1 0 0); /* Branco puro */
+  --secondary: oklch(0.25 0.05 280); /* Roxo escuro */
+  --secondary-foreground: oklch(0.95 0 0);
+  --muted: oklch(0.20 0 0);
+  --muted-foreground: oklch(0.55 0 0); /* Cinza médio */
+  --accent: oklch(0.65 0.20 320); /* Rosa/magenta vibrante */
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.60 0.25 25); /* Vermelho vibrante */
+  --border: oklch(0.30 0 0); /* Cinza escuro para bordas sutis */
+  --input: oklch(0.15 0 0);
+  --ring: oklch(0.6 0.15 250); /* Azul para focus ring */
+  --chart-1: oklch(0.6 0.15 250); /* Azul */
+  --chart-2: oklch(0.65 0.18 160); /* Verde/Ciano */
+  --chart-3: oklch(0.75 0.20 85); /* Amarelo */
+  --chart-4: oklch(0.65 0.20 320); /* Rosa */
+  --chart-5: oklch(0.70 0.25 30); /* Laranja */
+  --sidebar: oklch(0.10 0 0);
+  --sidebar-foreground: oklch(0.95 0 0);
+  --sidebar-primary: oklch(0.6 0.15 250);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.20 0 0);
+  --sidebar-accent-foreground: oklch(0.95 0 0);
+  --sidebar-border: oklch(0.30 0 0);
+  --sidebar-ring: oklch(0.6 0.15 250);
 }
 
 @theme inline {

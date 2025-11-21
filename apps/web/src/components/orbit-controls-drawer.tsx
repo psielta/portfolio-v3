@@ -130,17 +130,61 @@ export function OrbitControlsDrawer({
                 <Slider
                   id="speed"
                   min={0}
-                  max={200}
-                  step={10}
+                  max={500}
+                  step={1}
                   value={[animationSpeed]}
                   onValueChange={([value]) => {
                     onAnimationSpeedChange(value);
                   }}
                   className="w-full"
                 />
-                <p className="text-xs text-muted-foreground">
-                  {animationSpeed === 0 ? 'Pausado' : `${animationSpeed}x velocidade`}
-                </p>
+                <div className="flex justify-between items-center mt-2">
+                  <p className="text-xs text-muted-foreground">
+                    {animationSpeed === 0 ? 'Pausado' : `${animationSpeed}x velocidade`}
+                  </p>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onAnimationSpeedChange(0)}
+                      className="h-6 px-2 text-xs"
+                    >
+                      0x
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onAnimationSpeedChange(10)}
+                      className="h-6 px-2 text-xs"
+                    >
+                      10x
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onAnimationSpeedChange(30)}
+                      className="h-6 px-2 text-xs"
+                    >
+                      30x
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onAnimationSpeedChange(100)}
+                      className="h-6 px-2 text-xs"
+                    >
+                      100x
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onAnimationSpeedChange(365)}
+                      className="h-6 px-2 text-xs"
+                    >
+                      1 ano/s
+                    </Button>
+                  </div>
+                </div>
               </div>
 
               <div className="flex items-center space-x-2">

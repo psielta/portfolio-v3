@@ -290,11 +290,11 @@ export function OrbitViewer({
     } as any);
   }
 
-  // Theme-aware colors
-  const bgColor = isDark ? 'rgb(15, 23, 42)' : 'white';
-  const gridColor = isDark ? 'rgb(51, 65, 85)' : 'rgb(220, 220, 220)';
-  const textColor = isDark ? 'rgb(226, 232, 240)' : 'black';
-  const paperBgColor = isDark ? 'rgb(15, 23, 42)' : 'white';
+  // Theme-aware colors - tema espacial
+  const bgColor = isDark ? 'rgba(0, 0, 0, 0)' : 'white'; // Transparente para modo dark
+  const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgb(220, 220, 220)';
+  const textColor = isDark ? 'rgb(255, 255, 255)' : 'black';
+  const paperBgColor = isDark ? 'rgba(0, 0, 0, 0)' : 'white'; // Transparente para modo dark
 
   const layout: Partial<PlotParams['layout']> = {
     height: 700,

@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { trpc } from '@/utils/trpc';
-import { LandingOrbitViewer } from '@/components/landing-orbit-viewer';
+import { LandingOrbitViewerThreeSimple } from '@/components/landing-orbit-viewer-three-simple';
 import { OrbitControlsDrawer } from '@/components/orbit-controls-drawer';
+import { FloatingHeader } from '@/components/floating-header';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 import { Rocket, CheckSquare } from 'lucide-react';
@@ -30,17 +31,21 @@ export default function Home() {
   const [showVectors, setShowVectors] = useState(false);
   const [axisLimit, setAxisLimit] = useState<number | null>(30);
   const [animationSpeed, setAnimationSpeed] = useState(30);
-  const [autoRotate, setAutoRotate] = useState(true);
+  const [autoRotate, setAutoRotate] = useState(false); // Desabilitado por padrão
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-screen w-screen overflow-hidden bg-black fixed inset-0">
+      {/* Floating Header */}
+      <FloatingHeader />
+
       {/* 3D Visualization */}
-      <LandingOrbitViewer
+      <LandingOrbitViewerThreeSimple
         showPlanets={showPlanets}
         showVectors={showVectors}
         axisLimit={axisLimit}
         animationSpeed={animationSpeed}
         autoRotate={autoRotate}
+        julianDate={julianDate}
       />
 
       {/* Orbit Controls Drawer */}
