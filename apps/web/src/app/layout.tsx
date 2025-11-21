@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../index.css";
 import Providers from "@/components/providers";
-import Header from "@/components/header";
+import { AppLayout } from "@/components/app-layout";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "portfolio",
-	description: "portfolio",
+	title: "Portfolio",
+	description: "Portfolio profissional com visualizações interativas",
 };
 
 export default function RootLayout({
@@ -25,15 +25,12 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang="pt-BR" suppressHydrationWarning className="h-full">
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
 			>
 				<Providers>
-					<div className="grid grid-rows-[auto_1fr] h-svh">
-						<Header />
-						{children}
-					</div>
+					<AppLayout>{children}</AppLayout>
 				</Providers>
 			</body>
 		</html>

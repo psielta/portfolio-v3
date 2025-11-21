@@ -10,7 +10,7 @@
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  @apply bg-white dark:bg-slate-900;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
@@ -53,37 +53,38 @@ body {
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  /* Slate theme - matching orbital viewer colors - mais escuro e azulado */
+  --background: oklch(0.209 0.015 255.508); /* slate-900 - rgb(15, 23, 42) */
+  --foreground: oklch(0.898 0.005 247.896); /* slate-200 - mais suave */
+  --card: oklch(0.250 0.016 255.8); /* levemente mais claro que 900, bem azulado */
+  --card-foreground: oklch(0.898 0.005 247.896); /* slate-200 */
+  --popover: oklch(0.250 0.016 255.8);
+  --popover-foreground: oklch(0.898 0.005 247.896);
+  --primary: oklch(0.599 0.153 252.417); /* cornflowerblue - igual ao gráfico */
+  --primary-foreground: oklch(0.975 0.003 247.858); /* slate-50 */
+  --secondary: oklch(0.290 0.016 256.2); /* ainda mais escuro, azulado */
+  --secondary-foreground: oklch(0.898 0.005 247.896);
+  --muted: oklch(0.290 0.016 256.2);
+  --muted-foreground: oklch(0.636 0.014 256.328); /* slate-400 */
+  --accent: oklch(0.290 0.016 256.2);
+  --accent-foreground: oklch(0.898 0.005 247.896);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
+  --border: oklch(0.382 0.020 257.5); /* slate-700 com mais saturação azul */
+  --input: oklch(0.290 0.016 256.2); /* escuro, azulado */
+  --ring: oklch(0.599 0.153 252.417); /* cornflowerblue */
+  --chart-1: oklch(0.599 0.153 252.417);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar: oklch(0.250 0.016 255.8);
+  --sidebar-foreground: oklch(0.898 0.005 247.896);
+  --sidebar-primary: oklch(0.599 0.153 252.417);
+  --sidebar-primary-foreground: oklch(0.975 0.003 247.858);
+  --sidebar-accent: oklch(0.290 0.016 256.2);
+  --sidebar-accent-foreground: oklch(0.898 0.005 247.896);
+  --sidebar-border: oklch(0.382 0.020 257.5);
+  --sidebar-ring: oklch(0.599 0.153 252.417);
 }
 
 @theme inline {
