@@ -1,8 +1,8 @@
+import { AppLayout } from "@/components/app-layout";
+import Providers from "@/components/providers";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../index.css";
-import Providers from "@/components/providers";
-import { AppLayout } from "@/components/app-layout";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Portfolio",
+	title: "x",
 	description: "Portfolio profissional com visualizações interativas",
 };
 

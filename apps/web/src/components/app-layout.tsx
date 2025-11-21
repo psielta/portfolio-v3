@@ -33,7 +33,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
               <div className="shrink-0">
                 <Link href="/" className="flex items-center">
                   <span className="text-xl font-bold text-primary-foreground font-mono">
-                    &lt;Portfolio /&gt;
+                    {/* &lt;Portfolio /&gt; */}
                   </span>
                 </Link>
               </div>

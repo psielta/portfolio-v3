@@ -1,78 +1,65 @@
-"use client";
-import { useQuery } from "@tanstack/react-query";
-import { trpc } from "@/utils/trpc";
-import Link from "next/link";
+'use client';
 
-const TITLE_TEXT = `
- ██████╗ ███████╗████████╗████████╗███████╗██████╗
- ██╔══██╗██╔════╝╚══██╔══╝╚══██╔══╝██╔════╝██╔══██╗
- ██████╔╝█████╗     ██║      ██║   █████╗  ██████╔╝
- ██╔══██╗██╔══╝     ██║      ██║   ██╔══╝  ██╔══██╗
- ██████╔╝███████╗   ██║      ██║   ███████╗██║  ██║
- ╚═════╝ ╚══════╝   ╚═╝      ╚═╝   ╚══════╝╚═╝  ╚═╝
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { trpc } from '@/utils/trpc';
+import { LandingOrbitViewer } from '@/components/landing-orbit-viewer';
+import { OrbitControlsDrawer } from '@/components/orbit-controls-drawer';
+import { Card } from '@/components/ui/card';
+import Link from 'next/link';
+import { Rocket, CheckSquare } from 'lucide-react';
+import type { OrbitalElements } from '@/lib/orbital-mechanics';
 
- ████████╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
- ╚══██╔══╝    ██╔════╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝
-    ██║       ███████╗   ██║   ███████║██║     █████╔╝
-    ██║       ╚════██║   ██║   ██╔══██║██║     ██╔═██╗
-    ██║       ███████║   ██║   ██║  ██║╚██████╗██║  ██╗
-    ╚═╝       ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
- `;
+// Default orbital elements for custom orbit (hidden by default)
+const defaultElements: OrbitalElements = {
+  qr: 1.0,
+  ecc: 0.0167,
+  inc: 0.0,
+  raan: 0.0,
+  omega: 102.9,
+  tp: 2459580.5,
+};
 
 export default function Home() {
-	const healthCheck = useQuery(trpc.healthCheck.queryOptions());
+  const healthCheck = useQuery(trpc.healthCheck.queryOptions());
 
-	return (
-		<div className="container mx-auto max-w-3xl px-4 py-2">
-			<pre className="overflow-x-auto font-mono text-sm">{TITLE_TEXT}</pre>
-			<div className="grid gap-6">
-				<section className="rounded-lg border p-4">
-					<h2 className="mb-2 font-medium">Status da API</h2>
-					<div className="flex items-center gap-2">
-						<div
-							className={`h-2 w-2 rounded-full ${healthCheck.data ? "bg-green-500" : "bg-red-500"}`}
-						/>
-						<span className="text-sm text-muted-foreground">
-							{healthCheck.isLoading
-								? "Verificando..."
-								: healthCheck.data
-									? "Conectado"
-									: "Desconectado"}
-						</span>
-					</div>
-				</section>
+  // State for orbit controls
+  const [elements, setElements] = useState<OrbitalElements>(defaultElements);
+  const [julianDate, setJulianDate] = useState(2460676.5); // 1 Jan 2025
+  const [showPlanets, setShowPlanets] = useState(true);
+  const [showVectors, setShowVectors] = useState(false);
+  const [axisLimit, setAxisLimit] = useState<number | null>(30);
+  const [animationSpeed, setAnimationSpeed] = useState(30);
+  const [autoRotate, setAutoRotate] = useState(true);
 
-				<section className="rounded-lg border p-4">
-					<h2 className="mb-4 font-medium">Projetos</h2>
-					<div className="grid gap-3">
-						<Link
-							href="/orbits"
-							className="flex items-center justify-between rounded-md border p-3 transition-colors hover:bg-accent"
-						>
-							<div>
-								<h3 className="font-medium">Visualização de Mecânica Orbital</h3>
-								<p className="text-sm text-muted-foreground">
-									Visualização 3D interativa de órbitas planetárias
-								</p>
-							</div>
-							<span className="text-2xl">🪐</span>
-						</Link>
+  return (
+    <div className="min-h-screen bg-background">
+      {/* 3D Visualization */}
+      <LandingOrbitViewer
+        showPlanets={showPlanets}
+        showVectors={showVectors}
+        axisLimit={axisLimit}
+        animationSpeed={animationSpeed}
+        autoRotate={autoRotate}
+      />
 
-						<Link
-							href="/todos"
-							className="flex items-center justify-between rounded-md border p-3 transition-colors hover:bg-accent"
-						>
-							<div>
-								<h3 className="font-medium">Lista de Tarefas</h3>
-								<p className="text-sm text-muted-foreground">
-									Gerencie suas tarefas e afazeres
-								</p>
-							</div>
-							<span className="text-2xl">✅</span>
-						</Link>
-					</div>
-				</section>
-			</div>
-		</div>
-	);
+      {/* Orbit Controls Drawer */}
+      <OrbitControlsDrawer
+        elements={elements}
+        julianDate={julianDate}
+        onElementsChange={setElements}
+        onDateChange={setJulianDate}
+        showPlanets={showPlanets}
+        onShowPlanetsChange={setShowPlanets}
+        showVectors={showVectors}
+        onShowVectorsChange={setShowVectors}
+        axisLimit={axisLimit}
+        onAxisLimitChange={setAxisLimit}
+        animationSpeed={animationSpeed}
+        onAnimationSpeedChange={setAnimationSpeed}
+        autoRotate={autoRotate}
+        onAutoRotateChange={setAutoRotate}
+      />
+    </div>
+  );
 }
