@@ -1,0 +1,29 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "dev:native": "turbo -F native dev",
+    "dev:web": "turbo -F web dev",
+    "db:push": "turbo -F @portfolio/db db:push",
+    "db:studio": "turbo -F @portfolio/db db:studio",
+    "db:generate": "turbo -F @portfolio/db db:generate",
+    "db:migrate": "turbo -F @portfolio/db db:migrate"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.4",
+    "@types/node": "^22.13.11"
+  },
+  "packageManager": "npm@10.9.3"
+}
