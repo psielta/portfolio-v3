@@ -1,24 +1,26 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  Check,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Code2,
+  FolderGit2,
+  Globe,
+  Home,
+  Mail,
+  Orbit,
+  Rocket,
+  Sparkles,
+  User,
+  Zap
+} from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import {
-  ChevronRight,
-  ChevronLeft,
-  Rocket,
-  Globe,
-  Code2,
-  Zap,
-  Home,
-  Orbit,
-  FolderGit2,
-  Mail,
-  Sparkles,
-  CheckCircle2
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
 
 const WIZARD_VIEWED_KEY = 'portfolio_wizard_viewed';
 
@@ -26,7 +28,7 @@ const wizardSteps = [
   {
     id: 'welcome',
     title: 'Bem-vindo ao Portfolio',
-    icon: Rocket,
+    icon: Check,
     gradient: 'from-blue-500 to-purple-600',
     content: (
       <div className="space-y-6">
@@ -37,7 +39,7 @@ const wizardSteps = [
           className="flex justify-center"
         >
           <div className="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
-            <Rocket className="w-12 h-12 text-white" />
+            <User className="w-12 h-12 text-white" />
           </div>
         </motion.div>
         <motion.div

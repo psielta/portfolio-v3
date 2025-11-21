@@ -194,8 +194,7 @@ O pacote `@portfolio/api` utiliza `tsdown` para compilação:
 ### Em Desenvolvimento
 
 - [ ] Sistema de blog completo com editor markdown
-- [ ] Sistema solar 3D interativo
-- [ ] Sistema de autenticação
+- [x] Sistema solar 3D interativo
 - [ ] Comentários nos posts do blog
 
 ### Futuro
