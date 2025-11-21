@@ -5,7 +5,8 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
+import Joyride, { STATUS } from 'react-joyride';
+import type { CallBackProps, Step } from 'react-joyride';
 
 const TOUR_VIEWED_KEY = 'portfolio_tour_viewed';
 
@@ -197,7 +198,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                       <Link
                         key={item.name}
                         id={item.id}
-                        href={item.href}
+                        href={item.href as any}
                         aria-current={isActive ? 'page' : undefined}
                         className={classNames(
                           isActive
@@ -244,7 +245,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                   key={item.name}
                   id={`${item.id}-mobile`}
                   as={Link}
-                  href={item.href}
+                  href={item.href as any}
                   aria-current={isActive ? 'page' : undefined}
                   className={classNames(
                     isActive

@@ -115,7 +115,7 @@ function Sun() {
   const meshRef = useRef<THREE.Mesh>(null);
   const [showInfo, setShowInfo] = useState(false);
   const [cardHovered, setCardHovered] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
     // Limpar timeout ao desmontar
@@ -313,7 +313,7 @@ function Planet({
   const [showInfo, setShowInfo] = useState(false);
   const [cardHovered, setCardHovered] = useState(false);
   const [currentAngle, setCurrentAngle] = useState(0);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
     // Limpar timeout ao desmontar

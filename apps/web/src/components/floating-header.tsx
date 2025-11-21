@@ -98,7 +98,7 @@ export function FloatingHeader() {
                   whileHover={{ y: -2 }}
                 >
                   <Link
-                    href={item.href}
+                    href={item.href as any}
                     className="relative text-white/80 hover:text-white transition-colors group"
                   >
                     {item.label}
@@ -186,7 +186,7 @@ export function FloatingHeader() {
                   transition={{ delay: index * 0.1 }}
                 >
                   <Link
-                    href={item.href}
+                    href={item.href as any}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block text-white/80 hover:text-white transition-colors py-2"
                   >

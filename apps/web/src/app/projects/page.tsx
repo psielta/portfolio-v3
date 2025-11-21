@@ -28,7 +28,9 @@ export default function ProjectsPage() {
   });
 
   // Obter categorias únicas
-  const categories = Array.from(new Set(projects.map((p) => p.category).filter(Boolean)));
+  const categories = Array.from(
+    new Set(projects.map((p) => p.category).filter((c): c is string => Boolean(c)))
+  );
 
   return (
     <div className="min-h-screen py-12 px-4">
