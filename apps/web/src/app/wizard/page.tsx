@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
+  BookOpen,
   Check,
   CheckCircle2,
   ChevronLeft,
@@ -167,6 +168,53 @@ const wizardSteps = [
     ),
   },
   {
+    id: 'blog',
+    title: 'Blog Técnico',
+    icon: BookOpen,
+    gradient: 'from-indigo-500 to-purple-600',
+    route: '/blog',
+    content: (
+      <div className="space-y-6">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.2, type: 'spring' }}
+          className="flex justify-center"
+        >
+          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
+            <BookOpen className="w-10 h-10 text-white" />
+          </div>
+        </motion.div>
+        <div className="space-y-4">
+          <h3 className="text-2xl font-bold text-white text-center">Blog de Desenvolvimento</h3>
+          <div className="space-y-3 text-white/80">
+            <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
+              <Sparkles className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-white">Artigos com MDX</p>
+                <p className="text-sm text-white/70">Conteúdo rico com código, componentes interativos e demos</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
+              <Code2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-white">Compartilhamento de Conhecimento</p>
+                <p className="text-sm text-white/70">Tutoriais sobre desenvolvimento web, arquitetura e tecnologias modernas</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 bg-white/5 rounded-lg border border-white/10">
+              <Zap className="w-5 h-5 text-pink-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-white">SEO Otimizado</p>
+                <p className="text-sm text-white/70">Metadados estruturados, Open Graph e performance otimizada</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
     id: 'features',
     title: 'Recursos do Portfolio',
     icon: FolderGit2,
@@ -186,6 +234,18 @@ const wizardSteps = [
         <div className="space-y-4">
           <h3 className="text-2xl font-bold text-white text-center">Outras Seções</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Link href="/blog">
+              <div className="p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all cursor-pointer group">
+                <div className="flex items-center gap-3 mb-2">
+                  <BookOpen className="w-5 h-5 text-indigo-400" />
+                  <p className="font-semibold text-white">Blog</p>
+                </div>
+                <p className="text-sm text-white/70">
+                  Artigos sobre desenvolvimento e tecnologia
+                </p>
+                <ChevronRight className="w-4 h-4 text-white/50 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
+              </div>
+            </Link>
             <Link href="/projects">
               <div className="p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all cursor-pointer group">
                 <div className="flex items-center gap-3 mb-2">

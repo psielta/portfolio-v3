@@ -18,12 +18,16 @@
     "db:migrate": "turbo -F @portfolio/db db:migrate"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.19",
     "dotenv": "^17.2.2",
+    "gray-matter": "^4.0.3",
+    "next-mdx-remote-client": "^2.1.7",
+    "reading-time": "^1.5.0",
     "zod": "^4.1.11"
   },
   "devDependencies": {
-    "turbo": "^2.5.4",
-    "@types/node": "^22.13.11"
+    "@types/node": "^22.13.11",
+    "turbo": "^2.5.4"
   },
   "packageManager": "npm@10.9.3"
 }

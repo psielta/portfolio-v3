@@ -165,3 +165,110 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Estilos de Typography para o Blog - Tema Espacial */
+.prose {
+  @apply text-white/80;
+}
+
+.prose-invert {
+  --tw-prose-body: theme('colors.white / 80%');
+  --tw-prose-headings: theme('colors.white');
+  --tw-prose-lead: theme('colors.white / 70%');
+  --tw-prose-links: theme('colors.blue.400');
+  --tw-prose-bold: theme('colors.white');
+  --tw-prose-counters: theme('colors.white / 60%');
+  --tw-prose-bullets: theme('colors.white / 40%');
+  --tw-prose-hr: theme('colors.white / 20%');
+  --tw-prose-quotes: theme('colors.white / 90%');
+  --tw-prose-quote-borders: theme('colors.blue.500');
+  --tw-prose-captions: theme('colors.white / 60%');
+  --tw-prose-code: theme('colors.blue.400');
+  --tw-prose-pre-code: theme('colors.white / 90%');
+  --tw-prose-pre-bg: rgba(0, 0, 0, 0.6);
+  --tw-prose-th-borders: theme('colors.white / 20%');
+  --tw-prose-td-borders: theme('colors.white / 10%');
+  --tw-prose-invert-body: theme('colors.white / 80%');
+  --tw-prose-invert-headings: theme('colors.white');
+  --tw-prose-invert-lead: theme('colors.white / 70%');
+  --tw-prose-invert-links: theme('colors.blue.400');
+  --tw-prose-invert-bold: theme('colors.white');
+  --tw-prose-invert-counters: theme('colors.white / 60%');
+  --tw-prose-invert-bullets: theme('colors.white / 40%');
+  --tw-prose-invert-hr: theme('colors.white / 20%');
+  --tw-prose-invert-quotes: theme('colors.white / 90%');
+  --tw-prose-invert-quote-borders: theme('colors.blue.500');
+  --tw-prose-invert-captions: theme('colors.white / 60%');
+  --tw-prose-invert-code: theme('colors.blue.400');
+  --tw-prose-invert-pre-code: theme('colors.white / 90%');
+  --tw-prose-invert-pre-bg: rgba(0, 0, 0, 0.6);
+  --tw-prose-invert-th-borders: theme('colors.white / 20%');
+  --tw-prose-invert-td-borders: theme('colors.white / 10%');
+}
+
+/* Customizações adicionais para prose no tema espacial */
+.prose-lg {
+  @apply leading-relaxed;
+}
+
+.prose pre {
+  @apply backdrop-blur-sm border border-white/10 !bg-black/60;
+}
+
+.prose code {
+  @apply font-mono;
+}
+
+.prose a:hover {
+  @apply text-blue-300;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-blue-500 bg-white/5 not-italic;
+}
+
+.prose h1 {
+  @apply bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent;
+}
+
+.prose h2 {
+  @apply text-white;
+}
+
+.prose h3 {
+  @apply text-white/90;
+}
+
+.prose img {
+  @apply rounded-lg border border-white/20 shadow-[0_0_20px_rgba(59,130,246,0.2)];
+}
+
+.prose table {
+  @apply border border-white/20;
+}
+
+.prose th {
+  @apply bg-white/10 text-white font-semibold;
+}
+
+.prose td {
+  @apply text-white/80;
+}
+
+/* Highlight de código com tema espacial */
+.prose pre code {
+  @apply text-sm;
+}
+
+/* Scrollbar customizada para code blocks */
+.prose pre::-webkit-scrollbar {
+  @apply h-2 w-2;
+}
+
+.prose pre::-webkit-scrollbar-track {
+  @apply bg-white/5 rounded;
+}
+
+.prose pre::-webkit-scrollbar-thumb {
+  @apply bg-white/20 rounded hover:bg-white/30;
+}

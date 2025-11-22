@@ -1,0 +1,177 @@
+---
+title: "Construindo um Sistema Solar 3D com Three.js e React"
+description: "Como desenvolvi uma visualização interativa do sistema solar usando Three.js, React Three Fiber e dados reais da NASA"
+author: "Mateus Salgueiro"
+publishedAt: "2024-01-20"
+tags: ["three.js", "react", "3d", "webgl", "astronomia"]
+featured: true
+---
+
+A visualização 3D do sistema solar é um dos projetos mais desafiadores e fascinantes deste portfolio. Combinando física orbital real com gráficos 3D interativos, criei uma experiência educativa e visualmente impressionante.
+
+## A Inspiração
+
+Sempre fui fascinado pelo cosmos. A ideia de representar a vastidão e beleza do sistema solar em uma aplicação web nasceu do desejo de unir duas paixões: **programação** e **astronomia**.
+
+## Tecnologias Utilizadas
+
+### Three.js & React Three Fiber
+
+```javascript
+import { Canvas } from '@react-three/fiber'
+import { OrbitControls, Stars } from '@react-three/drei'
+
+function SolarSystem() {
+  return (
+    <Canvas camera={{ position: [0, 50, 100] }}>
+      <ambientLight intensity={0.1} />
+      <pointLight position={[0, 0, 0]} intensity={2} />
+      <Stars />
+      <OrbitControls />
+      {/* Planetas aqui */}
+    </Canvas>
+  )
+}
+```
+
+### Dados Orbitais Reais
+
+Utilizei dados da NASA para garantir precisão:
+
+| Planeta | Distância do Sol (UA) | Período Orbital (anos) |
+|---------|----------------------|------------------------|
+| Mercúrio | 0.39 | 0.24 |
+| Vênus | 0.72 | 0.62 |
+| Terra | 1.00 | 1.00 |
+| Marte | 1.52 | 1.88 |
+
+## Desafios Técnicos
+
+### 1. Escala e Proporções
+
+O sistema solar real tem proporções extremas:
+- O Sol é 109 vezes maior que a Terra
+- Netuno está 30 vezes mais distante do Sol que a Terra
+
+**Solução**: Implementei escalas logarítmicas para manter tudo visível e interativo.
+
+### 2. Performance
+
+Renderizar múltiplos objetos 3D com texturas pode ser pesado.
+
+**Otimizações aplicadas:**
+- Level of Detail (LOD) para objetos distantes
+- Instanced rendering para asteroides
+- Texture atlas para reduzir draw calls
+
+### 3. Mecânica Orbital
+
+```javascript
+function calculateOrbitPosition(planet, time) {
+  const angle = (time * planet.orbitalSpeed) % (Math.PI * 2)
+  return {
+    x: Math.cos(angle) * planet.orbitRadius,
+    z: Math.sin(angle) * planet.orbitRadius
+  }
+}
+```
+
+## Features Implementadas
+
+### 🎮 Controles Interativos
+
+- **Rotação**: Arraste para girar a câmera
+- **Zoom**: Scroll para aproximar/afastar
+- **Seleção**: Clique em planetas para informações
+- **Velocidade**: Controle do tempo de simulação
+
+### 📊 Painel de Informações
+
+Ao clicar em um planeta, exibe:
+- Composição atmosférica
+- Temperatura média
+- Número de luas
+- Fatos interessantes
+
+### 🌟 Efeitos Visuais
+
+- **Bloom** para o brilho do Sol
+- **Particle systems** para anéis de Saturno
+- **Shader customizado** para atmosferas planetárias
+
+## Implementação de Shaders
+
+Para criar atmosferas realistas, desenvolvi shaders GLSL customizados:
+
+```glsl
+varying vec3 vNormal;
+uniform vec3 atmosphereColor;
+
+void main() {
+  float intensity = pow(0.7 - dot(vNormal, vec3(0, 0, 1.0)), 2.0);
+  gl_FragColor = vec4(atmosphereColor, 1.0) * intensity;
+}
+```
+
+## Integração com o Portfolio
+
+O sistema solar não é apenas uma demonstração técnica - ele se integra ao tema espacial do portfolio:
+
+1. **Loading screen** animado com órbitas
+2. **Transições** entre páginas simulam viagem espacial
+3. **Easter eggs** - encontre todos os 8 planetas!
+
+## Lições Aprendidas
+
+### Performance é Crucial
+
+> "Premature optimization is the root of all evil, but in 3D graphics, it's necessary evil."
+
+### User Experience em 3D
+
+- Forneça referências visuais claras
+- Implemente controles intuitivos
+- Sempre inclua um botão de "reset camera"
+
+### Acessibilidade
+
+Mesmo em 3D, acessibilidade importa:
+- Descrições alternativas para screen readers
+- Controles por teclado
+- Modo de alto contraste
+
+## Código Aberto
+
+O código completo está disponível no GitHub. Principais arquivos:
+
+```
+src/components/solar-system/
+├── SolarSystem.tsx       # Componente principal
+├── Planet.tsx            # Componente de planeta
+├── OrbitLine.tsx         # Linhas orbitais
+├── shaders/              # GLSL shaders
+└── data/planets.json     # Dados dos planetas
+```
+
+## Futuras Melhorias
+
+- [ ] Adicionar cometas e asteroides
+- [ ] Simular eclipses
+- [ ] Modo "viagem" entre planetas
+- [ ] Realidade aumentada (WebXR)
+- [ ] Dados em tempo real de missões espaciais
+
+## Recursos e Referências
+
+- [NASA Solar System Exploration](https://solarsystem.nasa.gov/)
+- [Three.js Documentation](https://threejs.org/docs/)
+- [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/)
+- [WebGL Fundamentals](https://webglfundamentals.org/)
+
+## Conclusão
+
+Este projeto demonstra que a web moderna é capaz de experiências antes limitadas a aplicações desktop. Com WebGL e bibliotecas como Three.js, podemos levar os usuários em uma jornada pelo cosmos - tudo no navegador.
+
+---
+
+*"Somos todos poeira de estrelas contemplando as estrelas." - Carl Sagan*
