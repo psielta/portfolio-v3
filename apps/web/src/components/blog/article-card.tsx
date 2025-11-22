@@ -20,7 +20,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
   return (
     <motion.article
       whileHover={{ scale: 1.02, y: -5 }}
-      transition={{ type: 'spring', damping: 20, stiffness: 100 }}
+      transition={{ type: 'spring' as const, damping: 20, stiffness: 100 }}
       className="relative group"
     >
       {/* Card com efeito de glow */}

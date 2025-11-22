@@ -1,43 +1,60 @@
-# Portfolio Blog Pessoal
+# Portfolio Pessoal - Mateus Salgueiro
 
-Portfolio pessoal desenvolvido com Next.js, TypeScript, tRPC e Prisma, apresentando um blog para compartilhar conteúdo e um desafio de sistema solar interativo em 3D.
+Portfolio pessoal moderno desenvolvido com Next.js 16, TypeScript, tRPC e Prisma, apresentando um blog técnico, sistema solar interativo em 3D, e páginas dedicadas para ferramentas e entretenimento.
 
-## Sobre o Projeto
+## 🚀 Sobre o Projeto
 
-Este projeto de portfolio demonstra habilidades em desenvolvimento full-stack moderno, combinando as melhores práticas de desenvolvimento web com tecnologias atuais. O projeto foi criado como uma plataforma pessoal para:
+Este portfolio demonstra habilidades em desenvolvimento full-stack moderno, combinando as melhores práticas de desenvolvimento web com tecnologias atuais. O projeto apresenta:
 
-- **Blog Pessoal**: Sistema de blog integrado para publicação de artigos e projetos
-- **Sistema Solar 3D**: Desafio técnico de visualização interativa do sistema solar em 3D, demonstrando habilidades em gráficos 3D e interatividade
+- **Blog Técnico com MDX**: Sistema completo de blog para publicação de artigos sobre desenvolvimento
+- **Sistema Solar 3D**: Visualização interativa do sistema solar com Three.js
+- **Mecânica Orbital**: Simulação precisa de órbitas baseada em dados da NASA
+- **Páginas de Lifestyle**: Seções dedicadas para ferramentas de desenvolvimento e entretenimento
+- **Sistema de Contato**: Formulário funcional com envio de emails real
+- **Tour Interativo**: Wizard de introdução e tour guiado com React Joyride
 
-Este projeto utiliza uma arquitetura monorepo moderna com Turborepo, garantindo escalabilidade e organização do código.
+### ✨ Funcionalidades Principais
 
-### Funcionalidades Principais
-
-- **Blog com MDX**: Sistema completo de blog com suporte a MDX, filtros por tags e animações
-- **Sistema Solar 3D**: Visualização interativa do sistema solar com gráficos 3D
-- **Mecânica Orbital**: Visualização de órbitas com cálculos precisos baseados em dados da NASA
+- **Blog com MDX**: Sistema completo com suporte a MDX, filtros por tags e animações
+- **Sistema Solar 3D**: Visualização interativa com controles de velocidade e vetores físicos
+- **Mecânica Orbital**: Cálculos precisos de órbitas com parâmetros customizáveis
+- **Formulário de Contato**: Envio real de emails com Nodemailer e validação com React Hook Form + Zod
+- **Páginas de Lifestyle**:
+  - **Uses**: Ferramentas e tecnologias utilizadas no dia a dia
+  - **Entertainment**: Recomendações de filmes, séries e podcasts
 - **Arquitetura Monorepo**: Organização modular com Turborepo
 - **API Type-Safe**: End-to-end type safety com tRPC
-- **Design Moderno**: Interface construída com shadcn/ui e TailwindCSS
-- **Tour Interativo**: Wizard de introdução e tour com React Joyride
+- **Design Espacial**: Interface com tema espacial, glassmorphism e animações Framer Motion
+- **Tour Interativo**: Wizard de introdução e tour com 8 passos
 
-## Tecnologias Utilizadas
+## 🛠 Tecnologias Utilizadas
 
+### Core
 - **Framework**: Next.js 16.0.0 (React 19.2.0)
 - **Linguagem**: TypeScript 5
+- **Monorepo**: Turborepo 2.5.4
+
+### Backend
 - **ORM**: Prisma 7.0.0
 - **Banco de Dados**: SQLite/Turso
 - **API**: tRPC 11.5.0 (end-to-end type-safe)
+- **Email**: Nodemailer
+
+### Frontend
 - **Estilização**: TailwindCSS 4.1.10
 - **UI Components**: shadcn/ui + Radix UI
-- **Monorepo**: Turborepo 2.5.4
-- **Package Manager**: npm 10.9.3
-- **Build Tool**: tsdown (para pacote API)
-- **Blog/MDX**: next-mdx-remote-client 2.0.0 (React 19 compatible)
 - **Animações**: Framer Motion
+- **3D Graphics**: Three.js
+- **Formulários**: React Hook Form + Zod
+- **Blog/MDX**: next-mdx-remote-client 2.0.0
 - **Tour Guide**: React Joyride
 
-## Estrutura do Projeto
+### Testes
+- **Test Runner**: Vitest
+- **Testing Library**: @testing-library/react
+- **Environment**: Happy DOM
+
+## 📁 Estrutura do Projeto
 
 ```
 portfolio/
@@ -45,27 +62,33 @@ portfolio/
 │   └── web/                 # Aplicação Next.js (frontend + backend)
 │       ├── src/
 │       │   ├── app/        # Rotas Next.js (App Router)
-│       │   │   └── blog/   # Sistema de blog com MDX
-│       │   ├── components/ # Componentes React reutilizáveis
-│       │   │   └── blog/   # Componentes específicos do blog
-│       │   ├── content/    # Artigos MDX do blog
-│       │   │   └── blog/
-│       │   └── lib/        # Utilitários e funções auxiliares
+│       │   │   ├── about/       # Página sobre mim
+│       │   │   ├── blog/        # Sistema de blog com MDX
+│       │   │   ├── contact/     # Formulário de contato
+│       │   │   ├── entertainment/ # Recomendações de mídia
+│       │   │   ├── orbits/      # Mecânica orbital
+│       │   │   ├── projects/    # Projetos
+│       │   │   ├── uses/        # Ferramentas e tecnologias
+│       │   │   ├── wizard/      # Tour guiado
+│       │   │   └── api/
+│       │   │       └── contact/ # API de envio de email
+│       │   ├── components/      # Componentes React
+│       │   │   ├── ui/         # Componentes UI reutilizáveis
+│       │   │   │   ├── tool-card.tsx
+│       │   │   │   ├── media-card.tsx
+│       │   │   │   └── timeline.tsx
+│       │   │   └── blog/       # Componentes do blog
+│       │   ├── content/        # Artigos MDX do blog
+│       │   └── test/           # Configuração de testes
 │       └── package.json
 ├── packages/
 │   ├── api/                 # Camada de API / lógica de negócio
-│   │   ├── src/
-│   │   │   └── routers/    # Routers tRPC
-│   │   └── package.json
 │   ├── db/                  # Schema e queries do banco de dados
-│   │   ├── prisma/
-│   │   │   └── schema/     # Schema Prisma
-│   │   └── package.json
 │   └── config/              # Configurações compartilhadas
 └── package.json             # Configuração raiz do monorepo
 ```
 
-## Configuração do Ambiente
+## ⚙️ Configuração do Ambiente
 
 ### Pré-requisitos
 
@@ -88,30 +111,36 @@ npm install
 
 ### Passo 3: Configurar Variáveis de Ambiente
 
-Atualize o arquivo `.env` no diretório `apps/web` com as configurações necessárias:
+Crie um arquivo `.env.local` em `apps/web/` baseado no `.env.example`:
 
 ```bash
-# apps/web/.env
+# apps/web/.env.local
 DATABASE_URL="file:./dev.db"
+
+# Configuração de Email (opcional - para formulário de contato)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=465
+EMAIL_SECURE=true
+EMAIL_USER=seu-email@gmail.com
+EMAIL_PASS=sua-senha-de-app
+EMAIL_TO=email-destino@gmail.com
 ```
+
+**Nota**: Para o formulário de contato funcionar, você precisa:
+1. Criar uma senha de app no Google (não use sua senha normal)
+2. Configurar as variáveis de email acima
 
 ### Passo 4: Configurar o Banco de Dados
 
-1. **Gerar o Prisma Client**:
 ```bash
+# Gerar o Prisma Client
 npm run db:generate
-```
 
-2. **Fazer push do schema para criar/atualizar o banco de dados**:
-```bash
+# Criar/atualizar o banco de dados
 npm run db:push
 ```
 
-**Nota:** SQLite não requer um servidor de banco de dados separado - o arquivo do banco de dados é criado automaticamente quando você executa `db:push`.
-
 ### Passo 5: Executar o Projeto
-
-Execute o servidor de desenvolvimento:
 
 ```bash
 npm run dev
@@ -119,13 +148,13 @@ npm run dev
 
 A aplicação estará disponível em [http://localhost:3001](http://localhost:3001).
 
-## Scripts Disponíveis
+## 📝 Scripts Disponíveis
 
 ### Desenvolvimento
 
 - `npm run dev`: Inicia todas as aplicações em modo de desenvolvimento
 - `npm run dev:web`: Inicia apenas a aplicação web
-- `npm run check-types`: Verifica tipos TypeScript em todos os apps
+- `npm run check-types`: Verifica tipos TypeScript
 
 ### Build
 
@@ -134,137 +163,147 @@ A aplicação estará disponível em [http://localhost:3001](http://localhost:30
 ### Banco de Dados
 
 - `npm run db:generate`: Gera o Prisma Client
-- `npm run db:push`: Faz push das mudanças do schema para o banco de dados
-- `npm run db:migrate`: Executa migrações do banco de dados
-- `npm run db:studio`: Abre o Prisma Studio (UI para visualizar/editar dados)
+- `npm run db:push`: Sincroniza schema com o banco
+- `npm run db:migrate`: Executa migrações
+- `npm run db:studio`: Abre interface visual do banco
 
-## Troubleshooting
+### Testes
+
+- `npm run test`: Executa testes unitários
+- `npm run test:ui`: Executa testes com interface visual
+- `npm run test:coverage`: Gera relatório de cobertura
+
+## 🎨 Páginas e Funcionalidades
+
+### 🏠 Home
+Sistema solar 3D interativo com controles de velocidade, zoom e visualização de vetores físicos.
+
+### 📝 Blog
+Sistema de blog com suporte a MDX, filtros por tags, syntax highlighting e cálculo de tempo de leitura.
+
+### 📂 Projetos
+Galeria de projetos com descrições, tecnologias utilizadas e links para repositórios.
+
+### 👤 Sobre
+Página detalhada com:
+- Biografia e experiência profissional
+- Timeline interativa de carreira
+- Habilidades técnicas organizadas por categoria
+- Projetos em destaque
+
+### 🛠 Uses
+Ferramentas e tecnologias organizadas em categorias:
+- Development Tools
+- Design
+- Produtividade
+- Deploy & DevOps
+
+### 🎬 Entertainment
+Recomendações pessoais de:
+- Filmes
+- Séries
+- Podcasts
+- Documentários
+
+### 📬 Contato
+Formulário funcional com:
+- Validação em tempo real
+- Envio de emails real via SMTP
+- Email de confirmação automático
+- Design moderno com glassmorphism
+
+### 🚀 Wizard
+Tour guiado interativo apresentando todas as funcionalidades do portfolio.
+
+### 🪐 Órbitas
+Visualização de mecânica orbital com parâmetros customizáveis e cálculos baseados em dados da NASA.
+
+## 🧪 Testes
+
+O projeto inclui testes unitários para componentes críticos:
+
+```bash
+# Executar testes
+npm run test
+
+# Testes com interface visual
+npm run test:ui
+
+# Cobertura de testes
+npm run test:coverage
+```
+
+## 📧 Sistema de Contato
+
+O formulário de contato envia emails reais usando Nodemailer. Para configurar:
+
+1. Crie uma senha de app no Google (Configurações > Segurança > Senhas de app)
+2. Configure as variáveis de ambiente EMAIL_*
+3. O sistema enviará:
+   - Email principal para você com os dados do formulário
+   - Email de confirmação para o remetente
+
+## 🎯 Troubleshooting
 
 ### TypeScript não reconhece novos routers do tRPC
 
-Se você adicionar um novo router no `packages/api/src/routers/` e importá-lo no `appRouter`, mas o TypeScript ainda não reconhecer o tipo (ex: `Property 'cliente' does not exist on type 'TRPCOptionsProxy'`), você precisa reconstruir o pacote `api`:
-
-**Do diretório raiz do projeto:**
 ```bash
 npm run build -- -F @portfolio/api
+# Reinicie o servidor TypeScript no editor
 ```
 
-Ou usando npm workspace:
+### Erro ao enviar email
+
+Verifique se:
+- As variáveis de ambiente estão configuradas
+- A senha de app do Google está correta (não use sua senha normal)
+- O EMAIL_SECURE está como "true" (string)
+
+### Build falha com erro de tipos
+
 ```bash
-npm run build --workspace=@portfolio/api
+npm run check-types
+npm run build
 ```
 
-Isso acontece porque o tipo `AppRouter` é gerado durante o build do pacote `api`. Após o build, os tipos serão atualizados e o erro desaparecerá.
+## 🚀 Deploy
 
-**Dica:** Se o erro persistir no editor após o build, reinicie o servidor TypeScript:
-- VS Code/Cursor: `Ctrl+Shift+P` → "TypeScript: Restart TS Server"
+Para deploy em produção:
 
-### Script `db:local` não existe
-
-O comando `npm run db:local` mencionado anteriormente não existe mais. SQLite não requer um servidor separado - use `npm run db:generate` seguido de `npm run db:push` conforme documentado na seção de configuração.
-
-## Sistema de Blog
-
-### Características do Blog
-
-O sistema de blog foi desenvolvido com suporte completo a MDX, permitindo:
-
-- **Artigos em MDX**: Escreva artigos com componentes React interativos
-- **Filtros por Tags**: Sistema de categorização e filtro dinâmico
-- **Animações com Framer Motion**: Transições suaves e interativas
-- **SEO Otimizado**: Metadados estruturados para cada artigo
-- **Syntax Highlighting**: Suporte para blocos de código com destaque de sintaxe
-- **Reading Time**: Cálculo automático do tempo de leitura
-
-### Criando Novos Artigos
-
-Para adicionar um novo artigo ao blog:
-
-1. Crie um arquivo `.mdx` em `apps/web/src/content/blog/`
-2. Adicione o frontmatter no início do arquivo:
-
-```mdx
----
-title: "Título do Artigo"
-description: "Descrição breve do artigo"
-publishedAt: "2024-01-01"
-author: "Seu Nome"
-tags: ["tag1", "tag2"]
-featured: true # opcional, para destacar o artigo
----
-
-Conteúdo do artigo em MDX...
+1. Configure as variáveis de ambiente no seu provedor de hospedagem
+2. Execute o build:
+```bash
+npm run build
+```
+3. Inicie a aplicação:
+```bash
+npm start
 ```
 
-3. O artigo será automaticamente listado na página do blog
+Recomendado para deploy:
+- Vercel (configuração automática para Next.js)
+- Railway
+- Render
 
-### Componentes MDX Disponíveis
-
-Os artigos MDX têm acesso a componentes customizados para enriquecer o conteúdo:
-- Blocos de código com syntax highlighting
-- Imagens otimizadas com Next.js Image
-- Componentes React personalizados
-- Elementos HTML estilizados com Tailwind Typography
-
-## Notas Técnicas
-
-### Arquitetura Monorepo
-
-Este projeto utiliza **Turborepo** para gerenciar múltiplos pacotes em um único repositório:
-
-- **apps/web**: Aplicação Next.js principal
-- **packages/api**: Camada de API compartilhada com tRPC
-- **packages/db**: Schema e cliente Prisma compartilhado
-- **packages/config**: Configurações compartilhadas (TypeScript, ESLint, etc.)
-
-### Type Safety End-to-End
-
-O projeto utiliza **tRPC** para garantir type safety completo desde o backend até o frontend:
-
-- Rotas tRPC são definidas em `packages/api/src/routers/`
-- Tipos são gerados automaticamente durante o build
-- Frontend importa tipos diretamente do pacote `@portfolio/api`
-
-### Prisma com SQLite
-
-O projeto utiliza Prisma ORM com SQLite para desenvolvimento local:
-
-- Schema definido em `packages/db/prisma/schema/`
-- Cliente gerado em `packages/db/prisma/generated/`
-- Banco de dados SQLite criado automaticamente no diretório `apps/web/`
-
-### Build do Pacote API
-
-O pacote `@portfolio/api` utiliza `tsdown` para compilação:
-
-- Script de build: `npx tsdown`
-- Output: `packages/api/dist/`
-- Tipos gerados automaticamente
-
-### Compatibilidade com Next.js 16 e React 19
-
-Este projeto utiliza as versões mais recentes do Next.js (16) e React (19):
-
-- **MDX com React 19**: Utilizamos `next-mdx-remote-client` v2 que é compatível com React 19
-- **Turbopack**: Desenvolvimento otimizado com o novo bundler do Next.js
-- **Server Components**: Aproveitamento completo do App Router e React Server Components
-
-## Roadmap
+## 📈 Roadmap
 
 ### Concluído ✅
 
 - [x] Sistema de blog completo com MDX
 - [x] Sistema solar 3D interativo
 - [x] Mecânica orbital com visualização 3D
-- [x] Tour interativo com Wizard e React Joyride
-- [x] Filtros por tags no blog
-- [x] Animações com Framer Motion
+- [x] Tour interativo com Wizard
+- [x] Páginas Uses e Entertainment
+- [x] Formulário de contato funcional
+- [x] Testes unitários
+- [x] Timeline de experiência profissional
 
 ### Em Desenvolvimento
 
 - [ ] Comentários nos posts do blog
-- [ ] Sistema de busca no blog
+- [ ] Sistema de busca global
 - [ ] Newsletter/Inscrição por email
+- [ ] Analytics e métricas
 
 ### Futuro
 
@@ -272,25 +311,26 @@ Este projeto utiliza as versões mais recentes do Next.js (16) e React (19):
 - [ ] RSS Feed para o blog
 - [ ] PWA (Progressive Web App)
 - [ ] Internacionalização (i18n)
-- [ ] Deploy automatizado com CI/CD
-- [ ] Testes unitários e de integração
-- [ ] Analytics e métricas
-- [ ] Dark/Light mode toggle
+- [ ] CI/CD completo
+- [ ] Mais cobertura de testes
 
-## Contribuindo
+## 🤝 Contribuindo
 
-Este é um projeto pessoal de portfolio, mas feedbacks são bem-vindos! Sinta-se à vontade para abrir uma issue ou enviar um pull request.
+Este é um projeto pessoal de portfolio, mas feedbacks são bem-vindos! Sinta-se à vontade para:
+- Abrir issues com sugestões
+- Enviar pull requests
+- Usar como referência para seu próprio portfolio
 
-## Licença
+## 📄 Licença
 
 Este projeto está sob licença MIT. Sinta-se livre para usar como referência para seus próprios projetos.
 
-## Autor
+## 👨‍💻 Autor
 
-Mateus Salgueiro
+**Mateus Salgueiro**
 - GitHub: [@psielta](https://github.com/psielta)
 - LinkedIn: [Mateus Salgueiro](https://www.linkedin.com/in/mateus-salgueiro-525717205/)
 
 ---
 
-Desenvolvido com ❤️ como parte do meu portfolio de desenvolvimento web full-stack.
+Desenvolvido com ❤️ utilizando as mais modernas tecnologias web.

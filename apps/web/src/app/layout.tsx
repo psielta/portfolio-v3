@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "x",
-	description: "Portfolio profissional com visualizações interativas",
+	title: "Mateus Salgueiro Portfolio",
+	description: "Portfolio profissional de Mateus Salgueiro, desenvolvedor full stack e arquiteto de sistemas",
 };
 
 export default function RootLayout({

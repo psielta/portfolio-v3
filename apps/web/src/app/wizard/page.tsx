@@ -17,7 +17,9 @@ import {
   Rocket,
   Sparkles,
   User,
-  Zap
+  Zap,
+  Wrench,
+  Heart
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -341,6 +343,58 @@ const wizardSteps = [
     ),
   },
   {
+    id: 'lifestyle',
+    title: 'Lifestyle & Ferramentas',
+    icon: Wrench,
+    gradient: 'from-amber-500 to-orange-600',
+    content: (
+      <div className="space-y-6">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, type: 'spring' }}
+          className="flex justify-center"
+        >
+          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 flex items-center justify-center">
+            <Wrench className="w-10 h-10 text-white" />
+          </div>
+        </motion.div>
+        <div className="space-y-4">
+          <h3 className="text-2xl font-bold text-white text-center">Descubra Mais</h3>
+          <p className="text-white/80 text-center">
+            Conheça as ferramentas que uso e minhas recomendações de entretenimento
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Link href="/uses">
+              <div className="p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all cursor-pointer group">
+                <div className="flex items-center gap-3 mb-2">
+                  <Wrench className="w-5 h-5 text-amber-400" />
+                  <p className="font-semibold text-white">Uses</p>
+                </div>
+                <p className="text-sm text-white/70">
+                  Ferramentas e tecnologias que uso diariamente para desenvolvimento
+                </p>
+                <ChevronRight className="w-4 h-4 text-white/50 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
+              </div>
+            </Link>
+            <Link href="/entertainment">
+              <div className="p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all cursor-pointer group">
+                <div className="flex items-center gap-3 mb-2">
+                  <Heart className="w-5 h-5 text-red-400" />
+                  <p className="font-semibold text-white">Entretenimento</p>
+                </div>
+                <p className="text-sm text-white/70">
+                  Filmes, séries e podcasts que recomendo para inspiração e lazer
+                </p>
+                <ChevronRight className="w-4 h-4 text-white/50 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
     id: 'finish',
     title: 'Pronto para Explorar!',
     icon: CheckCircle2,
@@ -403,12 +457,10 @@ export default function WizardPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-        >
-          <Rocket className="w-12 h-12 text-blue-400" />
-        </motion.div>
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-blue-400/30 border-t-blue-400 rounded-full animate-spin" />
+          <p className="text-white/60 text-sm">Carregando...</p>
+        </div>
       </div>
     );
   }
