@@ -29,6 +29,7 @@
     "@ai-sdk/google": "^2.0.13",
     "dotenv": "^17.2.2",
     "zod": "^4.1.11",
-    "@portfolio/db": "*"
+    "@portfolio/db": "*",
+    "@portfolio/auth": "*"
   }
 }

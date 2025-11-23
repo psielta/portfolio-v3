@@ -6,6 +6,7 @@ Portfolio pessoal moderno desenvolvido com Next.js 16, TypeScript, tRPC e Prisma
 
 Este portfolio demonstra habilidades em desenvolvimento full-stack moderno, combinando as melhores práticas de desenvolvimento web com tecnologias atuais. O projeto apresenta:
 
+- **Sistema de Autenticação**: Autenticação completa com better-auth, login/cadastro e gestão de perfil
 - **Blog Técnico com MDX**: Sistema completo de blog para publicação de artigos sobre desenvolvimento
 - **Sistema Solar 3D**: Visualização interativa do sistema solar com Three.js
 - **Mecânica Orbital**: Simulação precisa de órbitas baseada em dados da NASA
@@ -15,10 +16,16 @@ Este portfolio demonstra habilidades em desenvolvimento full-stack moderno, comb
 
 ### ✨ Funcionalidades Principais
 
+- **Autenticação Completa**:
+  - Login e cadastro com email/senha
+  - Gestão de perfil de usuário
+  - Proteção de rotas com better-auth
+  - Sessões seguras com cookies httpOnly
+  - Dropdown de usuário no header
 - **Blog com MDX**: Sistema completo com suporte a MDX, filtros por tags e animações
 - **Sistema Solar 3D**: Visualização interativa com controles de velocidade e vetores físicos
 - **Mecânica Orbital**: Cálculos precisos de órbitas com parâmetros customizáveis
-- **Formulário de Contato**: Envio real de emails com Nodemailer e validação com React Hook Form + Zod
+- **Formulário de Contato**: Envio real de emails com Nodemailer e validação com Formik + Yup
 - **Páginas de Lifestyle**:
   - **Uses**: Ferramentas e tecnologias utilizadas no dia a dia
   - **Entertainment**: Recomendações de filmes, séries e podcasts
@@ -38,6 +45,7 @@ Este portfolio demonstra habilidades em desenvolvimento full-stack moderno, comb
 - **ORM**: Prisma 7.0.0
 - **Banco de Dados**: SQLite/Turso
 - **API**: tRPC 11.5.0 (end-to-end type-safe)
+- **Autenticação**: better-auth 1.4.0
 - **Email**: Nodemailer
 
 ### Frontend
@@ -45,7 +53,7 @@ Este portfolio demonstra habilidades em desenvolvimento full-stack moderno, comb
 - **UI Components**: shadcn/ui + Radix UI
 - **Animações**: Framer Motion
 - **3D Graphics**: Three.js
-- **Formulários**: React Hook Form + Zod
+- **Formulários**: Formik + Yup
 - **Blog/MDX**: next-mdx-remote-client 2.0.0
 - **Tour Guide**: React Joyride
 
@@ -62,27 +70,36 @@ portfolio/
 │   └── web/                 # Aplicação Next.js (frontend + backend)
 │       ├── src/
 │       │   ├── app/        # Rotas Next.js (App Router)
-│       │   │   ├── about/       # Página sobre mim
-│       │   │   ├── blog/        # Sistema de blog com MDX
-│       │   │   ├── contact/     # Formulário de contato
-│       │   │   ├── entertainment/ # Recomendações de mídia
-│       │   │   ├── orbits/      # Mecânica orbital
-│       │   │   ├── projects/    # Projetos
-│       │   │   ├── uses/        # Ferramentas e tecnologias
-│       │   │   ├── wizard/      # Tour guiado
+│       │   │   ├── about/           # Página sobre mim
+│       │   │   ├── blog/            # Sistema de blog com MDX
+│       │   │   ├── contact/         # Formulário de contato
+│       │   │   ├── entertainment/   # Recomendações de mídia
+│       │   │   ├── orbits/          # Mecânica orbital
+│       │   │   ├── projects/        # Projetos
+│       │   │   ├── uses/            # Ferramentas e tecnologias
+│       │   │   ├── wizard/          # Tour guiado
+│       │   │   ├── login/           # Página de login
+│       │   │   ├── signup/          # Página de cadastro
+│       │   │   ├── profile/         # Página de perfil do usuário
+│       │   │   ├── forgot-password/ # Recuperação de senha
+│       │   │   ├── reset-password/  # Redefinir senha
 │       │   │   └── api/
-│       │   │       └── contact/ # API de envio de email
+│       │   │       ├── auth/        # API de autenticação
+│       │   │       └── contact/     # API de envio de email
 │       │   ├── components/      # Componentes React
 │       │   │   ├── ui/         # Componentes UI reutilizáveis
-│       │   │   │   ├── tool-card.tsx
-│       │   │   │   ├── media-card.tsx
-│       │   │   │   └── timeline.tsx
-│       │   │   └── blog/       # Componentes do blog
+│       │   │   ├── auth/       # Componentes de autenticação
+│       │   │   ├── blog/       # Componentes do blog
+│       │   │   └── user-menu.tsx # Menu dropdown do usuário
+│       │   ├── lib/            # Utilitários e configurações
+│       │   │   ├── auth-client.ts  # Cliente de autenticação
+│       │   │   └── email/          # Sistema de envio de emails
 │       │   ├── content/        # Artigos MDX do blog
 │       │   └── test/           # Configuração de testes
 │       └── package.json
 ├── packages/
 │   ├── api/                 # Camada de API / lógica de negócio
+│   ├── auth/                # Configuração de autenticação
 │   ├── db/                  # Schema e queries do banco de dados
 │   └── config/              # Configurações compartilhadas
 └── package.json             # Configuração raiz do monorepo
@@ -175,6 +192,15 @@ A aplicação estará disponível em [http://localhost:3001](http://localhost:30
 
 ## 🎨 Páginas e Funcionalidades
 
+### 🔐 Autenticação
+Sistema completo de autenticação com:
+- **Login** (`/login`): Autenticação com email e senha
+- **Cadastro** (`/signup`): Criação de nova conta com validação robusta
+- **Perfil** (`/profile`): Edição de dados do usuário (protegida)
+- **Recuperação de Senha** (`/forgot-password` e `/reset-password`): Fluxo completo de reset
+- **Proteção de Rotas**: Páginas protegidas redirecionam para login
+- **UserMenu**: Dropdown no header mostrando status de autenticação
+
 ### 🏠 Home
 Sistema solar 3D interativo com controles de velocidade, zoom e visualização de vetores físicos.
 
@@ -207,7 +233,7 @@ Recomendações pessoais de:
 
 ### 📬 Contato
 Formulário funcional com:
-- Validação em tempo real
+- Validação em tempo real com Formik + Yup
 - Envio de emails real via SMTP
 - Email de confirmação automático
 - Design moderno com glassmorphism
@@ -289,6 +315,7 @@ Recomendado para deploy:
 
 ### Concluído ✅
 
+- [x] Sistema de autenticação completo (better-auth)
 - [x] Sistema de blog completo com MDX
 - [x] Sistema solar 3D interativo
 - [x] Mecânica orbital com visualização 3D
@@ -297,6 +324,8 @@ Recomendado para deploy:
 - [x] Formulário de contato funcional
 - [x] Testes unitários
 - [x] Timeline de experiência profissional
+- [x] Gestão de perfil de usuário
+- [x] Proteção de rotas
 
 ### Em Desenvolvimento
 

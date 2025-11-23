@@ -1,9 +1,13 @@
 import type { NextRequest } from "next/server";
+import { auth } from "@portfolio/auth";
 
 export async function createContext(req: NextRequest) {
-	// No auth configured
+	const session = await auth.api.getSession({
+		headers: req.headers,
+	});
+
 	return {
-		session: null,
+		session,
 	};
 }
 

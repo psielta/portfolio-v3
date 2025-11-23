@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Joyride, { STATUS } from 'react-joyride';
 import type { CallBackProps, Step } from 'react-joyride';
+import UserMenu from './user-menu';
 
 const TOUR_VIEWED_KEY = 'portfolio_tour_viewed';
 
@@ -248,6 +249,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
               >
                 Tour guiado
               </button>
+              <UserMenu />
             </div>
             <div className="-mr-2 flex md:hidden">
               <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md bg-white/10 p-2 text-white/70 hover:bg-white/20 hover:text-white focus:ring-2 focus:ring-blue-400 focus:outline-hidden">
