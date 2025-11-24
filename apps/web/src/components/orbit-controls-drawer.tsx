@@ -1,6 +1,9 @@
 'use client';
-import { Settings, Rocket, Pause, Play, RotateCw } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
 import {
   Sheet,
   SheetContent,
@@ -9,13 +12,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Separator } from '@/components/ui/separator';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import type { OrbitalElements } from '@/lib/orbital-mechanics';
+import { motion } from 'framer-motion';
+import { Pause, Play, Rocket, RotateCw, Settings } from 'lucide-react';
 
 interface OrbitControlsDrawerProps {
   elements: OrbitalElements;
@@ -81,7 +81,8 @@ export function OrbitControlsDrawer({
           <span className="sr-only">Configurações Orbitais</span>
         </motion.button>
       </SheetTrigger>
-      <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+      {/* Adicionando bg/card e text-card-foreground (index.css suporta via theme) e dark:border */}
+      <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto bg-card text-card-foreground border border-border dark:bg-card dark:text-card-foreground dark:border-border transition-colors duration-200">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
             <Rocket className="h-5 w-5" />
@@ -94,7 +95,7 @@ export function OrbitControlsDrawer({
 
         <div className="mt-6 space-y-6">
           {/* Animation Controls */}
-          <Card>
+          <Card className="bg-popover dark:bg-popover/80 border border-border dark:border-border text-popover-foreground dark:text-popover-foreground transition-colors duration-200">
             <CardHeader>
               <CardTitle className="text-base">Controles de Animação</CardTitle>
             </CardHeader>
@@ -205,7 +206,7 @@ export function OrbitControlsDrawer({
           </Card>
 
           {/* Display Options */}
-          <Card>
+          <Card className="bg-popover dark:bg-popover/80 border border-border dark:border-border text-popover-foreground dark:text-popover-foreground transition-colors duration-200">
             <CardHeader>
               <CardTitle className="text-base">Opções de Visualização</CardTitle>
             </CardHeader>
@@ -253,7 +254,7 @@ export function OrbitControlsDrawer({
           </Card>
 
           {/* Info Section */}
-          <Card>
+          <Card className="bg-popover dark:bg-popover/80 border border-border dark:border-border text-popover-foreground dark:text-popover-foreground transition-colors duration-200">
             <CardHeader>
               <CardTitle className="text-base">Sobre o Sistema Solar</CardTitle>
             </CardHeader>
@@ -282,7 +283,7 @@ export function OrbitControlsDrawer({
           </Card>
 
           {/* Advanced Section */}
-          <Card>
+          <Card className="bg-popover dark:bg-popover/80 border border-border dark:border-border text-popover-foreground dark:text-popover-foreground transition-colors duration-200">
             <CardHeader>
               <CardTitle className="text-base">Órbita Personalizada</CardTitle>
               <CardDescription>
