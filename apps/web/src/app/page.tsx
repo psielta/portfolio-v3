@@ -22,7 +22,10 @@ const defaultElements: OrbitalElements = {
 };
 
 export default function Home() {
-  const healthCheck = useQuery(trpc.healthCheck.queryOptions());
+  const healthCheck = useQuery({
+    queryKey: ['healthCheck'],
+    queryFn: () => trpc.healthCheck.query(),
+  });
 
   // State for orbit controls
   const [elements, setElements] = useState<OrbitalElements>(defaultElements);

@@ -3,7 +3,7 @@ import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "@portfolio/db";
 
-export const auth = betterAuth<BetterAuthOptions>({
+export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
 		provider: "sqlite",
 	}),
@@ -11,6 +11,16 @@ export const auth = betterAuth<BetterAuthOptions>({
 	emailAndPassword: {
 		enabled: true,
 		requireEmailVerification: false,
+	},
+	user: {
+		additionalFields: {
+			isAdmin: {
+				type: "boolean",
+				required: false,
+				defaultValue: false,
+				input: false,
+			}
+		}
 	},
 	plugins: [nextCookies()]
 });

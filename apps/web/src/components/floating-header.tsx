@@ -38,7 +38,8 @@ export function FloatingHeader() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                    {'<'}Portfolio {'/>'}
+                    {/* {'<'}Portfolio {'/>'} */}
+                    Title
                   </span>
                   <motion.div
                     className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"

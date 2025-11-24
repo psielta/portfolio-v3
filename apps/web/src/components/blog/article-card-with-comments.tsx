@@ -19,9 +19,10 @@ interface ArticleCardWithCommentsProps {
 }
 
 export function ArticleCardWithComments({ article }: ArticleCardWithCommentsProps) {
-  const { data: commentCount } = useQuery(
-    trpc.comment.getCount.queryOptions({ slug: article.slug })
-  );
+  const { data: commentCount } = useQuery({
+    queryKey: ['comment.getCount', article.slug],
+    queryFn: () => trpc.comment.getCount.query({ slug: article.slug }),
+  });
 
   return <ArticleCard article={article} commentCount={commentCount} />;
 }

@@ -13,11 +13,17 @@
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev"
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "devDependencies": {
     "prisma": "^7.0.0",
-    "@portfolio/config": "*"
+    "@portfolio/config": "*",
+    "tsx": "^4.7.0",
+    "@types/node": "^20.11.0"
   },
   "peerDependencies": {
     "typescript": "^5"
@@ -26,6 +32,8 @@
     "@prisma/client": "^7.0.0",
     "@prisma/adapter-libsql": "^7.0.0",
     "dotenv": "^17.2.2",
-    "zod": "^4.1.11"
+    "zod": "^4.1.11",
+    "bcryptjs": "^2.4.3",
+    "@paralleldrive/cuid2": "^2.2.2"
   }
 }

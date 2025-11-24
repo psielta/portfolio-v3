@@ -4,9 +4,9 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import Joyride, { STATUS } from 'react-joyride';
+import { useEffect, useState } from 'react';
 import type { CallBackProps, Step } from 'react-joyride';
+import Joyride, { STATUS } from 'react-joyride';
 import UserMenu from './user-menu';
 
 const TOUR_VIEWED_KEY = 'portfolio_tour_viewed';
@@ -211,7 +211,8 @@ export function AppLayout({ children, title }: AppLayoutProps) {
               <div className="shrink-0">
                 <Link href="/" className="flex items-center">
                   <span className="text-xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent font-mono">
-                    &lt;Portfolio /&gt;
+                    {/* &lt;Portfolio /&gt; */}
+                    Title
                   </span>
                 </Link>
               </div>

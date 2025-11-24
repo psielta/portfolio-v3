@@ -18,66 +18,73 @@ export default function CommentsSection({ articleSlug }: CommentsSectionProps) {
   const { data: session } = useSession();
 
   // Fetch comments
-  const { data: comments, isLoading } = useQuery(
-    trpc.comment.getByArticleSlug.queryOptions({
-      slug: articleSlug,
-    })
-  );
+  const { data: comments, isLoading } = useQuery({
+    queryKey: ['comment.getByArticleSlug', articleSlug],
+    queryFn: () => trpc.comment.getByArticleSlug.query({ slug: articleSlug }),
+  });
 
   // Mutations
-  const createComment = useMutation(trpc.comment.create.mutationOptions({
+  const createComment = useMutation({
+    mutationFn: (input: { content: string; articleSlug: string; parentId?: string }) =>
+      trpc.comment.create.mutate(input),
     onSuccess: () => {
       toast.success('Comentário publicado!');
       queryClient.invalidateQueries({
-        queryKey: [['comment', 'getByArticleSlug'], { input: { slug: articleSlug } }]
+        queryKey: ['comment.getByArticleSlug', articleSlug]
       });
       queryClient.invalidateQueries({
-        queryKey: [['comment', 'getCount'], { input: { slug: articleSlug } }]
+        queryKey: ['comment.getCount', articleSlug]
       });
     },
     onError: (error: any) => {
       toast.error(error.message || 'Erro ao publicar comentário');
     },
-  }));
+  });
 
-  const updateComment = useMutation(trpc.comment.update.mutationOptions({
+  const updateComment = useMutation({
+    mutationFn: (input: { id: string; content: string }) =>
+      trpc.comment.update.mutate(input),
     onSuccess: () => {
       toast.success('Comentário atualizado!');
       queryClient.invalidateQueries({
-        queryKey: [['comment', 'getByArticleSlug'], { input: { slug: articleSlug } }]
+        queryKey: ['comment.getByArticleSlug', articleSlug]
       });
     },
     onError: (error: any) => {
       toast.error(error.message || 'Erro ao atualizar comentário');
     },
-  }));
+  });
 
-  const deleteComment = useMutation(trpc.comment.delete.mutationOptions({
+  const deleteComment = useMutation({
+    mutationFn: (input: { id: string }) =>
+      trpc.comment.delete.mutate(input),
     onSuccess: () => {
       toast.success('Comentário deletado!');
       queryClient.invalidateQueries({
-        queryKey: [['comment', 'getByArticleSlug'], { input: { slug: articleSlug } }]
+        queryKey: ['comment.getByArticleSlug', articleSlug]
       });
       queryClient.invalidateQueries({
-        queryKey: [['comment', 'getCount'], { input: { slug: articleSlug } }]
+        queryKey: ['comment.getCount', articleSlug]
       });
     },
     onError: (error: any) => {
       toast.error(error.message || 'Erro ao deletar comentário');
     },
-  }));
+  });
 
-  const toggleLike = useMutation(trpc.comment.toggleLike.mutationOptions({
+  const toggleLike = useMutation({
+    mutationFn: (input: { commentId: string }) =>
+      trpc.comment.toggleLike.mutate(input),
     onSuccess: (data: any) => {
       toast.success(data.liked ? 'Comentário curtido!' : 'Curtida removida');
       queryClient.invalidateQueries({
-        queryKey: [['comment', 'getByArticleSlug'], { input: { slug: articleSlug } }]
+        queryKey: ['comment.getByArticleSlug', articleSlug]
       });
     },
     onError: (error: any) => {
       toast.error(error.message || 'Erro ao curtir comentário');
     },
-  }));
+  });
 
   // Handlers
   const handleCreateComment = async (content: string) => {

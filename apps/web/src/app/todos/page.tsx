@@ -19,29 +19,29 @@ import { trpc } from "@/utils/trpc";
 export default function TodosPage() {
 	const [newTodoText, setNewTodoText] = useState("");
 
-	const todos = useQuery(trpc.todo.getAll.queryOptions());
-	const createMutation = useMutation(
-		trpc.todo.create.mutationOptions({
-			onSuccess: () => {
-				todos.refetch();
-				setNewTodoText("");
-			},
-		}),
-	);
-	const toggleMutation = useMutation(
-		trpc.todo.toggle.mutationOptions({
-			onSuccess: () => {
-				todos.refetch();
-			},
-		}),
-	);
-	const deleteMutation = useMutation(
-		trpc.todo.delete.mutationOptions({
-			onSuccess: () => {
-				todos.refetch();
-			},
-		}),
-	);
+	const todos = useQuery({
+		queryKey: ['todo.getAll'],
+		queryFn: () => trpc.todo.getAll.query(),
+	});
+	const createMutation = useMutation({
+		mutationFn: (input: { text: string }) => trpc.todo.create.mutate(input),
+		onSuccess: () => {
+			todos.refetch();
+			setNewTodoText("");
+		},
+	});
+	const toggleMutation = useMutation({
+		mutationFn: (input: { id: number; completed: boolean }) => trpc.todo.toggle.mutate(input),
+		onSuccess: () => {
+			todos.refetch();
+		},
+	});
+	const deleteMutation = useMutation({
+		mutationFn: (input: { id: number }) => trpc.todo.delete.mutate(input),
+		onSuccess: () => {
+			todos.refetch();
+		},
+	});
 
 	const handleAddTodo = (e: React.FormEvent) => {
 		e.preventDefault();

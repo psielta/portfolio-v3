@@ -8,6 +8,9 @@
 !.yarn/releases
 !.yarn/versions
 
+#database
+local.db
+
 # Testing
 /coverage
 

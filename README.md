@@ -6,7 +6,10 @@ Portfolio pessoal moderno desenvolvido com Next.js 16, TypeScript, tRPC e Prisma
 
 Este portfolio demonstra habilidades em desenvolvimento full-stack moderno, combinando as melhores práticas de desenvolvimento web com tecnologias atuais. O projeto apresenta:
 
-- **Sistema de Autenticação**: Autenticação completa com better-auth, login/cadastro e gestão de perfil
+- **Sistema de Autenticação**: Autenticação completa com better-auth, login/cadastro, gestão de perfil e sistema de roles (admin/usuário)
+- **Chat em Tempo Real**: Sistema completo de mensagens instantâneas entre usuários e admin usando Ably (WebSocket)
+- **Painel Administrativo**: Interface dedicada para admin gerenciar conversas, visualizar métricas e responder usuários
+- **Sistema de Comentários**: Comentários nos posts do blog com threads e likes
 - **Blog Técnico com MDX**: Sistema completo de blog para publicação de artigos sobre desenvolvimento
 - **Sistema Solar 3D**: Visualização interativa do sistema solar com Three.js
 - **Mecânica Orbital**: Simulação precisa de órbitas baseada em dados da NASA
@@ -22,6 +25,15 @@ Este portfolio demonstra habilidades em desenvolvimento full-stack moderno, comb
   - Proteção de rotas com better-auth
   - Sessões seguras com cookies httpOnly
   - Dropdown de usuário no header
+  - Sistema de roles (usuário/admin)
+- **Chat em Tempo Real**:
+  - Chat direto com admin usando Ably (WebSocket)
+  - Widget de chat flutuante para usuários
+  - Painel administrativo para gerenciar conversas
+  - Indicadores de digitação em tempo real
+  - Contador de mensagens não lidas
+  - Marcação automática de mensagens lidas
+  - Sistema de presença (online/offline)
 - **Blog com MDX**: Sistema completo com suporte a MDX, filtros por tags e animações
 - **Sistema Solar 3D**: Visualização interativa com controles de velocidade e vetores físicos
 - **Mecânica Orbital**: Cálculos precisos de órbitas com parâmetros customizáveis
@@ -47,6 +59,7 @@ Este portfolio demonstra habilidades em desenvolvimento full-stack moderno, comb
 - **API**: tRPC 11.5.0 (end-to-end type-safe)
 - **Autenticação**: better-auth 1.4.0
 - **Email**: Nodemailer
+- **Real-time**: Ably (WebSocket)
 
 ### Frontend
 - **Estilização**: TailwindCSS 4.1.10
@@ -71,6 +84,8 @@ portfolio/
 │       ├── src/
 │       │   ├── app/        # Rotas Next.js (App Router)
 │       │   │   ├── about/           # Página sobre mim
+│       │   │   ├── admin/           # Painel administrativo
+│       │   │   │   └── chat/        # Gerenciamento de conversas
 │       │   │   ├── blog/            # Sistema de blog com MDX
 │       │   │   ├── contact/         # Formulário de contato
 │       │   │   ├── entertainment/   # Recomendações de mídia
@@ -85,22 +100,33 @@ portfolio/
 │       │   │   ├── reset-password/  # Redefinir senha
 │       │   │   └── api/
 │       │   │       ├── auth/        # API de autenticação
+│       │   │       ├── chat/        # API de chat real-time (Ably tokens)
 │       │   │       └── contact/     # API de envio de email
 │       │   ├── components/      # Componentes React
 │       │   │   ├── ui/         # Componentes UI reutilizáveis
 │       │   │   ├── auth/       # Componentes de autenticação
 │       │   │   ├── blog/       # Componentes do blog
+│       │   │   ├── chat/       # Componentes de chat em tempo real
 │       │   │   └── user-menu.tsx # Menu dropdown do usuário
 │       │   ├── lib/            # Utilitários e configurações
 │       │   │   ├── auth-client.ts  # Cliente de autenticação
+│       │   │   ├── ably-client.ts  # Cliente Ably (WebSocket)
 │       │   │   └── email/          # Sistema de envio de emails
 │       │   ├── content/        # Artigos MDX do blog
 │       │   └── test/           # Configuração de testes
 │       └── package.json
 ├── packages/
 │   ├── api/                 # Camada de API / lógica de negócio
+│   │   └── src/routers/
+│   │       └── chat.ts      # Router tRPC para chat (endpoints protegidos)
 │   ├── auth/                # Configuração de autenticação
+│   │   └── src/index.ts     # Configuração better-auth com roles
 │   ├── db/                  # Schema e queries do banco de dados
+│   │   └── prisma/
+│   │       ├── schema/
+│   │       │   ├── auth.prisma    # Schema de autenticação (User, Session, Account)
+│   │       │   └── chat.prisma    # Schema de chat (Conversation, Message)
+│   │       └── seed.ts            # Seed para criar usuário admin
 │   └── config/              # Configurações compartilhadas
 └── package.json             # Configuração raiz do monorepo
 ```
@@ -132,6 +158,13 @@ Crie um arquivo `.env.local` em `apps/web/` baseado no `.env.example`:
 
 ```bash
 # apps/web/.env.local
+
+# Better Auth
+BETTER_AUTH_SECRET=your-secret-key-here
+BETTER_AUTH_URL=http://localhost:3001
+CORS_ORIGIN=http://localhost:3001
+
+# Database
 DATABASE_URL="file:./dev.db"
 
 # Configuração de Email (opcional - para formulário de contato)
@@ -141,11 +174,31 @@ EMAIL_SECURE=true
 EMAIL_USER=seu-email@gmail.com
 EMAIL_PASS=sua-senha-de-app
 EMAIL_TO=email-destino@gmail.com
+
+# Ably Configuration (Real-time Chat)
+# Get your API key from: https://ably.com/dashboard
+ABLY_API_KEY=your-ably-api-key
+
+# Admin Configuration
+# The admin user will be automatically created when running prisma seed
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=your-secure-password
 ```
 
-**Nota**: Para o formulário de contato funcionar, você precisa:
-1. Criar uma senha de app no Google (não use sua senha normal)
-2. Configurar as variáveis de email acima
+**Notas importantes**:
+
+1. **Email** (opcional - para formulário de contato):
+   - Crie uma senha de app no Google (não use sua senha normal)
+   - Configure as variáveis EMAIL_*
+
+2. **Ably** (necessário para chat em tempo real):
+   - Crie uma conta gratuita em [ably.com](https://ably.com)
+   - Copie sua API key do dashboard
+   - Configure a variável ABLY_API_KEY
+
+3. **Admin** (cria usuário admin automaticamente):
+   - Configure ADMIN_EMAIL e ADMIN_PASSWORD
+   - Será criado automaticamente ao rodar o seed
 
 ### Passo 4: Configurar o Banco de Dados
 
@@ -155,6 +208,9 @@ npm run db:generate
 
 # Criar/atualizar o banco de dados
 npm run db:push
+
+# Criar usuário admin (opcional, mas recomendado)
+npm run db:seed
 ```
 
 ### Passo 5: Executar o Projeto
@@ -183,6 +239,7 @@ A aplicação estará disponível em [http://localhost:3001](http://localhost:30
 - `npm run db:push`: Sincroniza schema com o banco
 - `npm run db:migrate`: Executa migrações
 - `npm run db:studio`: Abre interface visual do banco
+- `npm run db:seed`: Cria usuário admin (requer ADMIN_EMAIL e ADMIN_PASSWORD no .env)
 
 ### Testes
 
@@ -200,6 +257,16 @@ Sistema completo de autenticação com:
 - **Recuperação de Senha** (`/forgot-password` e `/reset-password`): Fluxo completo de reset
 - **Proteção de Rotas**: Páginas protegidas redirecionam para login
 - **UserMenu**: Dropdown no header mostrando status de autenticação
+- **Sistema de Roles**: Diferenciação entre usuário comum e admin
+
+### 💬 Chat em Tempo Real
+Sistema de mensagens instantâneas entre usuários e admin:
+- **Widget de Chat**: Botão flutuante para iniciar conversas (usuários autenticados)
+- **Painel Admin** (`/admin/chat`): Interface para gerenciar todas as conversas (admin only)
+- **Mensagens Real-time**: Comunicação instantânea via Ably WebSocket
+- **Indicadores**: Digitação em tempo real e status de presença
+- **Notificações**: Contador de mensagens não lidas
+- **Histórico**: Todas as mensagens são persistidas no banco
 
 ### 🏠 Home
 Sistema solar 3D interativo com controles de velocidade, zoom e visualização de vetores físicos.
@@ -259,6 +326,108 @@ npm run test:ui
 npm run test:coverage
 ```
 
+## 💬 Sistema de Chat em Tempo Real
+
+O portfolio inclui um sistema completo de chat em tempo real entre usuários e admin:
+
+### Funcionalidades
+
+- **Widget de Chat**: Botão flutuante disponível para usuários autenticados
+- **Comunicação Real-time**: Mensagens instantâneas usando Ably (WebSocket)
+- **Painel Admin**: Interface dedicada para gerenciar todas as conversas
+- **Indicadores de Digitação**: Mostra quando alguém está digitando
+- **Status de Presença**: Indica se o usuário/admin está online
+- **Mensagens Não Lidas**: Contador de mensagens não lidas
+- **Marcação Automática**: Mensagens marcadas como lidas ao abrir a conversa
+
+### Arquitetura
+
+```
+┌─────────────────┐         ┌─────────────┐         ┌──────────────┐
+│  User (Widget)  │ ◄─────► │ Ably Server │ ◄─────► │ Admin Panel  │
+└─────────────────┘         └─────────────┘         └──────────────┘
+        │                                                    │
+        └──────────────────┬────────────────────────────────┘
+                           │
+                    ┌──────▼──────┐
+                    │  tRPC API   │
+                    └──────┬──────┘
+                           │
+                    ┌──────▼──────┐
+                    │   Prisma    │
+                    └──────┬──────┘
+                           │
+                    ┌──────▼──────┐
+                    │  Database   │
+                    └─────────────┘
+```
+
+### Configuração
+
+1. Crie uma conta gratuita no [Ably](https://ably.com)
+2. Copie sua API key do dashboard
+3. Configure a variável `ABLY_API_KEY` no `.env.local`
+4. O sistema estará pronto para uso!
+
+### Como Usar
+
+**Para usuários**:
+- Faça login no sistema
+- Clique no ícone de chat flutuante no canto inferior direito
+- Envie mensagens diretamente para o admin
+
+**Para admin**:
+- Faça login com a conta admin (criada via seed)
+- Acesse `/admin/chat` para ver todas as conversas
+- Selecione uma conversa para responder
+- Veja indicadores de presença e mensagens não lidas
+
+### Estrutura do Banco de Dados
+
+O sistema de chat utiliza dois modelos principais (packages/db/prisma/schema/chat.prisma):
+
+**Conversation** (Conversa):
+- `id`: ID único da conversa
+- `userId`: Referência ao usuário que iniciou
+- `isAdminChat`: Flag indicando conversa com admin
+- `lastMessageAt`: Timestamp da última mensagem (para ordenação)
+- `isDeleted`: Soft delete
+
+**Message** (Mensagem):
+- `id`: ID único da mensagem
+- `content`: Conteúdo da mensagem (max 2000 caracteres)
+- `conversationId`: Referência à conversa
+- `senderId`: Referência ao usuário que enviou
+- `status`: Status da mensagem (SENT, DELIVERED, READ)
+- `readAt`: Timestamp de quando foi lida
+- `isDeleted`: Soft delete
+
+### Endpoints tRPC
+
+O router de chat (packages/api/src/routers/chat.ts) expõe os seguintes endpoints:
+
+**Usuários autenticados**:
+- `getOrCreateConversation`: Busca ou cria conversa com admin
+- `sendMessage`: Envia uma mensagem
+- `markAsRead`: Marca mensagens como lidas
+- `getUnreadCount`: Conta mensagens não lidas
+
+**Admin only**:
+- `getAllConversations`: Lista todas as conversas
+- `getConversationById`: Busca conversa específica
+- `getAdminUnreadCount`: Conta total de mensagens não lidas
+
+### Segurança
+
+O sistema implementa múltiplas camadas de segurança:
+
+1. **Autenticação**: Todos os endpoints são protegidos por `protectedProcedure` do tRPC
+2. **Autorização**: Verificação de roles para endpoints admin
+3. **Validação**: Input validado com Zod (limite de 2000 caracteres por mensagem)
+4. **Verificação de Acesso**: Usuários só podem acessar suas próprias conversas
+5. **Token Ably**: Gerado server-side com permissões específicas por usuário
+6. **CORS**: Configurado via `CORS_ORIGIN` no better-auth
+
 ## 📧 Sistema de Contato
 
 O formulário de contato envia emails reais usando Nodemailer. Para configurar:
@@ -269,6 +438,36 @@ O formulário de contato envia emails reais usando Nodemailer. Para configurar:
    - Email principal para você com os dados do formulário
    - Email de confirmação para o remetente
 
+## 👑 Sistema de Admin
+
+O portfolio possui um sistema de roles com permissões de admin:
+
+### Criação do Admin
+
+O usuário admin é criado automaticamente ao executar o seed do banco:
+
+```bash
+# Configure no .env.local:
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=your-secure-password
+
+# Execute o seed:
+npm run db:seed
+```
+
+O seed utiliza o **better-auth** para criar o usuário (packages/db/prisma/seed.ts:75-99), garantindo:
+- Hash de senha compatível com o sistema de autenticação
+- Estrutura correta de Account e User
+- Flag `isAdmin: true` configurada
+- Email verificado automaticamente
+
+### Funcionalidades Admin
+
+- **Painel de Chat**: Acesso a todas as conversas em `/admin/chat`
+- **Gerenciamento de Conversas**: Visualizar e responder múltiplas conversas
+- **Métricas**: Contador total de mensagens não lidas
+- **API Protegida**: Endpoints exclusivos para admin no tRPC (packages/api/src/routers/chat.ts:206-330)
+
 ## 🎯 Troubleshooting
 
 ### TypeScript não reconhece novos routers do tRPC
@@ -277,6 +476,21 @@ O formulário de contato envia emails reais usando Nodemailer. Para configurar:
 npm run build -- -F @portfolio/api
 # Reinicie o servidor TypeScript no editor
 ```
+
+### Chat não conecta / Mensagens não aparecem
+
+Verifique se:
+- A variável `ABLY_API_KEY` está configurada corretamente
+- Você está autenticado no sistema
+- O console do navegador não mostra erros de conexão WebSocket
+- Teste a conexão Ably em: https://ably.com/dashboard
+
+### Admin não consegue acessar /admin/chat
+
+Verifique se:
+- O seed foi executado com sucesso (`npm run db:seed`)
+- Você está logado com a conta admin (email configurado em `ADMIN_EMAIL`)
+- A flag `isAdmin` está `true` no banco de dados (verifique com `npm run db:studio`)
 
 ### Erro ao enviar email
 
@@ -292,30 +506,59 @@ npm run check-types
 npm run build
 ```
 
+### Seed não cria o usuário admin
+
+Verifique se:
+- As variáveis `ADMIN_EMAIL` e `ADMIN_PASSWORD` estão no `.env.local`
+- O arquivo está em `apps/web/.env.local`
+- Execute `npm run db:seed` novamente
+- Veja os logs para entender o erro
+
 ## 🚀 Deploy
 
 Para deploy em produção:
 
-1. Configure as variáveis de ambiente no seu provedor de hospedagem
+1. Configure as variáveis de ambiente no seu provedor de hospedagem:
+   - `BETTER_AUTH_SECRET` e `BETTER_AUTH_URL`
+   - `DATABASE_URL` (use Turso para produção)
+   - `ABLY_API_KEY` (para chat em tempo real)
+   - `ADMIN_EMAIL` e `ADMIN_PASSWORD` (opcional)
+   - `EMAIL_*` (se usar formulário de contato)
+
 2. Execute o build:
 ```bash
 npm run build
 ```
-3. Inicie a aplicação:
+
+3. Execute as migrações do banco:
+```bash
+npm run db:push
+npm run db:seed  # Opcional: criar admin
+```
+
+4. Inicie a aplicação:
 ```bash
 npm start
 ```
 
-Recomendado para deploy:
-- Vercel (configuração automática para Next.js)
-- Railway
-- Render
+**Provedores recomendados**:
+- **Vercel** (Next.js + configuração automática)
+- **Railway** (fácil setup de banco de dados)
+- **Render** (deploy full-stack)
+
+**Banco de dados em produção**:
+- Use [Turso](https://turso.tech) (SQLite na edge, gratuito até 500 databases)
+- Alternativas: Neon, PlanetScale, Supabase
 
 ## 📈 Roadmap
 
 ### Concluído ✅
 
 - [x] Sistema de autenticação completo (better-auth)
+- [x] Sistema de roles (usuário/admin)
+- [x] Chat em tempo real com Ably (WebSocket)
+- [x] Painel administrativo para gerenciar conversas
+- [x] Sistema de comentários nos posts do blog
 - [x] Sistema de blog completo com MDX
 - [x] Sistema solar 3D interativo
 - [x] Mecânica orbital com visualização 3D
@@ -326,13 +569,14 @@ Recomendado para deploy:
 - [x] Timeline de experiência profissional
 - [x] Gestão de perfil de usuário
 - [x] Proteção de rotas
+- [x] Seed automático para usuário admin
 
 ### Em Desenvolvimento
 
-- [ ] Comentários nos posts do blog
 - [ ] Sistema de busca global
 - [ ] Newsletter/Inscrição por email
 - [ ] Analytics e métricas
+- [ ] Notificações push para novas mensagens
 
 ### Futuro
 

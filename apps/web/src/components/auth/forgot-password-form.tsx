@@ -40,13 +40,14 @@ export default function ForgotPasswordForm() {
 
   const onSubmit = async (data: ForgotPasswordFormData) => {
     try {
-      await authClient.forgetPassword({
-        email: data.email,
-        redirectTo: '/reset-password',
-      });
+      // TODO: Habilitar forget password no better-auth
+      // await authClient.forgetPassword({
+      //   email: data.email,
+      //   redirectTo: '/reset-password',
+      // });
 
       setIsSuccess(true);
-      toast.success('Email de recuperação enviado!');
+      toast.success('Email de recuperação enviado! (Funcionalidade em desenvolvimento)');
     } catch (error: any) {
       console.error('Erro ao solicitar reset:', error);
       toast.error(error?.message || 'Erro ao enviar email. Tente novamente.');

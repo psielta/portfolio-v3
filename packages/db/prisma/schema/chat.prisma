@@ -1,0 +1,61 @@
+model Conversation {
+  id        String   @id @default(cuid())
+
+  // User who initiated the chat
+  userId    String
+  user      User     @relation("UserConversations", fields: [userId], references: [id], onDelete: Cascade)
+
+  // Admin chat flag
+  isAdminChat Boolean @default(true)
+
+  // Metadata
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  lastMessageAt DateTime @default(now())
+
+  // Relations
+  messages  Message[]
+
+  // Soft delete
+  isDeleted Boolean @default(false)
+
+  @@index([userId])
+  @@index([lastMessageAt])
+  @@map("conversation")
+}
+
+model Message {
+  id        String   @id @default(cuid())
+
+  // Content
+  content   String
+
+  // Relationships
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderId  String
+  sender    User     @relation("UserMessages", fields: [senderId], references: [id], onDelete: Cascade)
+
+  // Message status
+  status    MessageStatus @default(SENT)
+  readAt    DateTime?
+
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Soft delete
+  isDeleted Boolean @default(false)
+
+  @@index([conversationId])
+  @@index([senderId])
+  @@index([createdAt])
+  @@map("message")
+}
+
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
+}

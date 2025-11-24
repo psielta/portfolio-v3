@@ -11,15 +11,15 @@ import {
   Code2,
   FolderGit2,
   Globe,
+  Heart,
   Home,
   Mail,
   Orbit,
   Rocket,
   Sparkles,
   User,
-  Zap,
   Wrench,
-  Heart
+  Zap
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -504,7 +504,8 @@ export default function WizardPage() {
             <div className="flex items-center justify-between mb-8">
               <Link href="/">
                 <span className="text-xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent cursor-pointer">
-                  &lt;Portfolio /&gt;
+                  {/* &lt;Portfolio /&gt; */}
+                  Title
                 </span>
               </Link>
               <div className="flex items-center gap-4">

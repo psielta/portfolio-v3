@@ -1,5 +1,6 @@
 import { AppLayout } from "@/components/app-layout";
 import Providers from "@/components/providers";
+import ChatWidget from "@/components/chat/chat-widget";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../index.css";
@@ -31,6 +32,7 @@ export default function RootLayout({
 			>
 				<Providers>
 					<AppLayout>{children}</AppLayout>
+					<ChatWidget />
 				</Providers>
 			</body>
 		</html>
