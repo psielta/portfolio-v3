@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { User as UserIcon, Mail, Calendar, Loader2 } from 'lucide-react';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import { trpc, queryClient } from '@/utils/trpc';
 import { toast } from 'sonner';
 import { useChat } from '@/hooks/use-chat';
@@ -19,10 +19,30 @@ interface AdminChatPanelProps {
 }
 
 export default function AdminChatPanel({ conversationId, adminId }: AdminChatPanelProps) {
-  // Get conversation details
-  const { data: conversation, isLoading } = useQuery({
+  // Get conversation details (for user info only)
+  const { data: conversation, isLoading: isLoadingConversation } = useQuery({
     queryKey: ['chat.getConversationById', conversationId],
     queryFn: () => trpc.chat.getConversationById.query({ conversationId }),
+  });
+
+  // Paginated messages query
+  const {
+    data: paginatedData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading: isLoadingMessages,
+  } = useInfiniteQuery({
+    queryKey: ['chat.getMessages', conversationId],
+    queryFn: ({ pageParam }) =>
+      trpc.chat.getMessages.query({
+        conversationId,
+        cursor: pageParam,
+        limit: 20,
+      }),
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    enabled: !!conversationId,
+    initialPageParam: undefined as string | undefined,
   });
 
   // Real-time hooks
@@ -33,12 +53,20 @@ export default function AdminChatPanel({ conversationId, adminId }: AdminChatPan
     adminId
   );
 
-  // Load messages from DB
+  // Load paginated messages when data arrives
   useEffect(() => {
-    if (conversation?.messages) {
-      setMessages(conversation.messages as any);
+    if (paginatedData?.pages) {
+      const allMessages = paginatedData.pages.flatMap((page) => page.messages);
+      setMessages(allMessages as any);
     }
-  }, [conversation, setMessages]);
+  }, [paginatedData, setMessages]);
+
+  // Load more messages callback
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   // Send message mutation
   const sendMessageMutation = useMutation({
@@ -49,12 +77,22 @@ export default function AdminChatPanel({ conversationId, adminId }: AdminChatPan
     },
   });
 
-  // Mark as read when conversation is opened
+  // Mark as read when conversation is opened and broadcast read receipt
   useEffect(() => {
-    if (conversationId) {
-      trpc.chat.markAsRead.mutate({ conversationId }).catch(console.error);
+    if (conversationId && adminId) {
+      trpc.chat.markAsRead
+        .mutate({ conversationId })
+        .then(() => {
+          // Broadcast read receipt so user sees the status update
+          publishMessage(`chat:${conversationId}`, 'read-receipt', {
+            readBy: adminId,
+            conversationId,
+            readAt: new Date().toISOString(),
+          }).catch(console.error);
+        })
+        .catch(console.error);
     }
-  }, [conversationId]);
+  }, [conversationId, adminId]);
 
   const handleSend = async (content: string) => {
     if (!conversation) return;
@@ -117,7 +155,9 @@ export default function AdminChatPanel({ conversationId, adminId }: AdminChatPan
     sendTypingIndicator(isTyping);
   };
 
-  if (isLoading) {
+  const isLoading = isLoadingConversation || isLoadingMessages;
+
+  if (isLoading && !conversation) {
     return (
       <div className="h-full flex items-center justify-center bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
         <Loader2 className="w-8 h-8 text-purple-400 animate-spin" />
@@ -181,6 +221,9 @@ export default function AdminChatPanel({ conversationId, adminId }: AdminChatPan
         currentUserId={adminId}
         isTyping={isOtherUserTyping}
         typingUserName={user.name}
+        hasMore={hasNextPage}
+        isLoadingMore={isFetchingNextPage}
+        onLoadMore={handleLoadMore}
       />
 
       {/* Input */}

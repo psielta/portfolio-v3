@@ -1,5 +1,6 @@
 'use client';
 import { Settings, Rocket, Pause, Play, RotateCw } from 'lucide-react';
+import { motion } from 'framer-motion';
 import {
   Sheet,
   SheetContent,
@@ -68,14 +69,17 @@ export function OrbitControlsDrawer({
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="fixed bottom-6 right-6 z-40 h-14 w-14 rounded-full shadow-lg bg-card/95 backdrop-blur-sm border-primary/20 hover:border-primary/40 transition-all hover:scale-110"
+        <motion.button
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.7, type: 'spring' }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="fixed bottom-24 right-6 md:bottom-6 md:right-24 z-40 p-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 rounded-full shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 text-white transition-all"
         >
-          <Settings className="h-6 w-6" />
+          <Settings className="w-6 h-6" />
           <span className="sr-only">Configurações Orbitais</span>
-        </Button>
+        </motion.button>
       </SheetTrigger>
       <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
         <SheetHeader>

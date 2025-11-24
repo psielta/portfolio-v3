@@ -504,8 +504,7 @@ export default function WizardPage() {
             <div className="flex items-center justify-between mb-8">
               <Link href="/">
                 <span className="text-xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent cursor-pointer">
-                  {/* &lt;Portfolio /&gt; */}
-                  Title
+                  &lt;Portfolio /&gt;
                 </span>
               </Link>
               <div className="flex items-center gap-4">

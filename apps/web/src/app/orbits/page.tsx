@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import { OrbitViewer } from '@/components/orbit-viewer';
 import { OrbitControls } from '@/components/orbit-controls';
+import { OrbitViewer } from '@/components/orbit-viewer';
 import type { OrbitalElements } from '@/lib/orbital-mechanics';
 import { cal2jd } from '@/lib/orbital-mechanics';
+import { useState } from 'react';
 
 export default function OrbitsPage() {
   // Initialize with Earth-like orbit
@@ -34,7 +34,7 @@ export default function OrbitsPage() {
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2 text-white">Visualização de Mecânica Orbital</h1>
         <p className="text-white/70">
-          Visualização 3D interativa de órbitas planetárias. Ajuste os elementos orbitais para ver como
+          Segue visualização 3D interativa de órbitas planetárias disponibilizada pela NASA/JPL. Essas fontes me ajudaram a criar a visualização 3D interativa de órbitas planetárias na rota <a href="/" className="underline text-blue-400 hover:text-blue-300">principal</a> deste portfolio. Ajuste os elementos orbitais para ver como
           eles afetam a forma e orientação da órbita.
         </p>
       </div>
@@ -64,6 +64,36 @@ export default function OrbitsPage() {
             onAxisLimitChange={setAxisLimit}
           />
         </div>
+      </div>
+
+      <div
+      className="my-3"
+        style={{
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <figure>
+          <iframe
+            id="smd-iframe-smd-iframe-cd6f4819-f2a5-4f21-a9a0-ec8a883505aa"
+            src="https://eyes.nasa.gov/apps/solar-system/#/home?embed=true"
+            title="Our Solar System in Real-Time"
+            className="smd-iframe-iframe border-0"
+            style={{
+              width: '100%',
+              height: '100%',
+              minHeight: '100vh',
+            }}
+            loading="lazy"
+            allow="fullscreen"
+            data-gtm-yt-inspected-16="true"
+            data-gtm-yt-inspected-21="true"
+          >
+            Unable to render the provided source
+          </iframe>
+        </figure>
       </div>
 
       <div className="mt-8 p-6 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
@@ -113,7 +143,7 @@ export default function OrbitsPage() {
         </div>
       </div>
 
-      <div className="mt-4 text-center text-sm text-white/50">
+      <div className="mt-3 text-center text-sm text-white/50">
         <p>
           Cálculos de mecânica orbital adaptados do NASA JPL Solar System Dynamics
         </p>

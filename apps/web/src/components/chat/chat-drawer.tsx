@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Circle, Loader2, LogIn, UserPlus } from 'lucide-react';
 import Link from 'next/link';
 import { useSession } from '@/lib/auth-client';
 import { trpc, queryClient } from '@/utils/trpc';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useChat } from '@/hooks/use-chat';
 import { useTypingIndicator } from '@/hooks/use-typing-indicator';
@@ -37,23 +37,70 @@ export default function ChatDrawer({ isOpen, onClose }: ChatDrawerProps) {
     }
   }, [conversation]);
 
+  // Paginated messages query
+  const {
+    data: paginatedData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading: isLoadingMessages,
+  } = useInfiniteQuery({
+    queryKey: ['chat.getMessages', conversationId],
+    queryFn: ({ pageParam }) =>
+      trpc.chat.getMessages.query({
+        conversationId: conversationId!,
+        cursor: pageParam,
+        limit: 20,
+      }),
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    enabled: !!conversationId && isOpen,
+    initialPageParam: undefined as string | undefined,
+  });
+
   // Real-time hooks
   const { messages, setMessages, addOptimisticMessage, updateMessageId } = useChat(conversationId);
   const { isOtherUserTyping, sendTypingIndicator } = useTypingIndicator(
     conversationId,
     session?.user?.id || null
   );
-  const { isUserOnline } = usePresence(
+  const { isUserOnline: isConversationUserOnline } = usePresence(
     conversationId ? `presence:${conversationId}` : null,
     session?.user?.id || null
   );
 
-  // Load messages from DB when conversation is ready
+  // Check if admin is online globally
+  const ADMIN_ID = process.env.NEXT_PUBLIC_ADMIN_ID;
+  const { isUserOnline: isAdminOnline } = usePresence(
+    'presence:admin',
+    session?.user?.id || null
+  );
+
+  // Lock body scroll when drawer is open
   useEffect(() => {
-    if (conversation?.messages) {
-      setMessages(conversation.messages as any);
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
     }
-  }, [conversation, setMessages]);
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  // Load paginated messages when data arrives
+  useEffect(() => {
+    if (paginatedData?.pages) {
+      const allMessages = paginatedData.pages.flatMap((page) => page.messages);
+      setMessages(allMessages as any);
+    }
+  }, [paginatedData, setMessages]);
+
+  // Load more messages callback
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   // Send message mutation
   const sendMessageMutation = useMutation({
@@ -64,12 +111,22 @@ export default function ChatDrawer({ isOpen, onClose }: ChatDrawerProps) {
     },
   });
 
-  // Mark as read when drawer opens
+  // Mark as read when drawer opens and broadcast read receipt
   useEffect(() => {
-    if (isOpen && conversationId) {
-      trpc.chat.markAsRead.mutate({ conversationId }).catch(console.error);
+    if (isOpen && conversationId && session?.user?.id) {
+      trpc.chat.markAsRead
+        .mutate({ conversationId })
+        .then(() => {
+          // Broadcast read receipt so sender sees the status update
+          publishMessage(`chat:${conversationId}`, 'read-receipt', {
+            readBy: session.user.id,
+            conversationId,
+            readAt: new Date().toISOString(),
+          }).catch(console.error);
+        })
+        .catch(console.error);
     }
-  }, [isOpen, conversationId]);
+  }, [isOpen, conversationId, session?.user?.id]);
 
   const handleSend = async (content: string) => {
     if (!conversationId || !session?.user) return;
@@ -139,8 +196,8 @@ export default function ChatDrawer({ isOpen, onClose }: ChatDrawerProps) {
     sendTypingIndicator(isTyping);
   };
 
-  // Check if admin is online (assuming admin has a known ID)
-  const adminOnline = false; // You can implement this based on presence
+  // Check if admin is online using global presence channel
+  const adminOnline = ADMIN_ID ? isAdminOnline(ADMIN_ID) : false;
 
   return (
     <AnimatePresence>
@@ -229,7 +286,7 @@ export default function ChatDrawer({ isOpen, onClose }: ChatDrawerProps) {
                   </div>
                 </div>
               </div>
-            ) : isLoadingConversation ? (
+            ) : isLoadingConversation || isLoadingMessages ? (
               <div className="flex-1 flex items-center justify-center">
                 <Loader2 className="w-8 h-8 text-purple-400 animate-spin" />
               </div>
@@ -240,6 +297,9 @@ export default function ChatDrawer({ isOpen, onClose }: ChatDrawerProps) {
                   currentUserId={session.user.id}
                   isTyping={isOtherUserTyping}
                   typingUserName="Mateus"
+                  hasMore={hasNextPage}
+                  isLoadingMore={isFetchingNextPage}
+                  onLoadMore={handleLoadMore}
                 />
                 <ChatInput
                   onSend={handleSend}

@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Loader2, MessageSquare } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { trpc } from '@/utils/trpc';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface ConversationListProps {
   activeConversationId: string | null;
@@ -47,7 +46,7 @@ export default function ConversationList({
         </h2>
       </div>
 
-      <ScrollArea className="flex-1">
+      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent hover:scrollbar-thumb-white/30">
         <div className="p-2 space-y-2">
           {conversations.map((conversation) => {
             const isActive = activeConversationId === conversation.id;
@@ -119,7 +118,7 @@ export default function ConversationList({
             );
           })}
         </div>
-      </ScrollArea>
+      </div>
     </div>
   );
 }

@@ -55,23 +55,27 @@ export default function ChatInput({
     const trimmed = message.trim();
     if (!trimmed || isSending || disabled) return;
 
+    // Clear input immediately for instant feedback (optimistic UI)
+    setMessage('');
+
+    // Stop typing indicator immediately
+    if (onTyping) {
+      onTyping(false);
+    }
+
+    // Reset textarea height immediately
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
+
     setIsSending(true);
 
     try {
       await onSend(trimmed);
-      setMessage('');
-
-      // Stop typing indicator
-      if (onTyping) {
-        onTyping(false);
-      }
-
-      // Reset textarea height
-      if (textareaRef.current) {
-        textareaRef.current.style.height = 'auto';
-      }
     } catch (error) {
       console.error('Error sending message:', error);
+      // Restore message on error so user doesn't lose their text
+      setMessage(trimmed);
     } finally {
       setIsSending(false);
     }

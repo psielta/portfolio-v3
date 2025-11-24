@@ -33,7 +33,10 @@ Este portfolio demonstra habilidades em desenvolvimento full-stack moderno, comb
   - Indicadores de digitação em tempo real
   - Contador de mensagens não lidas
   - Marcação automática de mensagens lidas
-  - Sistema de presença (online/offline)
+  - Sistema de presença global (status online/offline do admin)
+  - Read receipts em tempo real (confirmação de leitura)
+  - Paginação infinita estilo WhatsApp (scroll para carregar mensagens antigas)
+  - Input otimista (resposta instantânea ao enviar)
 - **Blog com MDX**: Sistema completo com suporte a MDX, filtros por tags e animações
 - **Sistema Solar 3D**: Visualização interativa com controles de velocidade e vetores físicos
 - **Mecânica Orbital**: Cálculos precisos de órbitas com parâmetros customizáveis
@@ -183,6 +186,10 @@ ABLY_API_KEY=your-ably-api-key
 # The admin user will be automatically created when running prisma seed
 ADMIN_EMAIL=admin@example.com
 ADMIN_PASSWORD=your-secure-password
+
+# Admin User ID (for real-time presence tracking)
+# Get this from database after running seed (use prisma studio)
+NEXT_PUBLIC_ADMIN_ID=your-admin-user-id
 ```
 
 **Notas importantes**:
@@ -199,6 +206,12 @@ ADMIN_PASSWORD=your-secure-password
 3. **Admin** (cria usuário admin automaticamente):
    - Configure ADMIN_EMAIL e ADMIN_PASSWORD
    - Será criado automaticamente ao rodar o seed
+
+4. **Admin ID** (necessário para status online do admin):
+   - Após rodar o seed, abra o Prisma Studio (`npm run db:studio`)
+   - Copie o ID do usuário admin da tabela `User`
+   - Configure a variável `NEXT_PUBLIC_ADMIN_ID`
+   - Isso permite que usuários vejam quando o admin está online
 
 ### Passo 4: Configurar o Banco de Dados
 
@@ -336,9 +349,12 @@ O portfolio inclui um sistema completo de chat em tempo real entre usuários e a
 - **Comunicação Real-time**: Mensagens instantâneas usando Ably (WebSocket)
 - **Painel Admin**: Interface dedicada para gerenciar todas as conversas
 - **Indicadores de Digitação**: Mostra quando alguém está digitando
-- **Status de Presença**: Indica se o usuário/admin está online
+- **Status de Presença Global**: Indica se o admin está online (via canal `presence:admin`)
 - **Mensagens Não Lidas**: Contador de mensagens não lidas
 - **Marcação Automática**: Mensagens marcadas como lidas ao abrir a conversa
+- **Read Receipts**: Confirmação de leitura em tempo real via broadcast Ably
+- **Paginação Infinita**: Carregamento de mensagens antigas ao rolar para cima (estilo WhatsApp)
+- **Input Otimista**: Limpa o campo imediatamente ao enviar (UI responsiva)
 
 ### Arquitetura
 
@@ -411,6 +427,7 @@ O router de chat (packages/api/src/routers/chat.ts) expõe os seguintes endpoint
 - `sendMessage`: Envia uma mensagem
 - `markAsRead`: Marca mensagens como lidas
 - `getUnreadCount`: Conta mensagens não lidas
+- `getMessages`: Busca mensagens com paginação cursor-based
 
 **Admin only**:
 - `getAllConversations`: Lista todas as conversas

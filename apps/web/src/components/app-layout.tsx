@@ -211,8 +211,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
               <div className="shrink-0">
                 <Link href="/" className="flex items-center">
                   <span className="text-xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent font-mono">
-                    {/* &lt;Portfolio /&gt; */}
-                    Title
+                    &lt;Portfolio /&gt;
                   </span>
                 </Link>
               </div>

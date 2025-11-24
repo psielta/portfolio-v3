@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import ChatMessage from './chat-message';
 import TypingIndicator from './typing-indicator';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface Message {
   id: string;
@@ -24,6 +23,9 @@ interface ChatMessageListProps {
   messages: Message[];
   currentUserId: string;
   isLoading?: boolean;
+  isLoadingMore?: boolean;
+  hasMore?: boolean;
+  onLoadMore?: () => void;
   isTyping?: boolean;
   typingUserName?: string;
 }
@@ -32,18 +34,73 @@ export default function ChatMessageList({
   messages,
   currentUserId,
   isLoading = false,
+  isLoadingMore = false,
+  hasMore = false,
+  onLoadMore,
   isTyping = false,
   typingUserName = 'Usuário',
 }: ChatMessageListProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const topRef = useRef<HTMLDivElement>(null);
+  const isInitialMount = useRef(true);
+  const prevMessagesLength = useRef(messages.length);
+  const prevScrollHeight = useRef(0);
 
-  // Auto-scroll to bottom on new messages
+  // Scroll to bottom on initial load and new messages (only when at bottom)
   useEffect(() => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    if (isInitialMount.current && messages.length > 0) {
+      // Initial load - scroll to bottom instantly
+      container.scrollTop = container.scrollHeight;
+      isInitialMount.current = false;
+      prevMessagesLength.current = messages.length;
+      return;
     }
-  }, [messages, isTyping]);
+
+    // Check if new messages were added at the end (not loaded from top)
+    const newMessagesAdded = messages.length > prevMessagesLength.current;
+    const wasAtBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+
+    if (newMessagesAdded && wasAtBottom) {
+      // New message received and user was at bottom - scroll to bottom
+      container.scrollTop = container.scrollHeight;
+    } else if (newMessagesAdded && prevScrollHeight.current > 0) {
+      // Messages loaded at top - maintain scroll position
+      const heightDiff = container.scrollHeight - prevScrollHeight.current;
+      container.scrollTop += heightDiff;
+    }
+
+    prevMessagesLength.current = messages.length;
+  }, [messages]);
+
+  // Also scroll when typing indicator appears
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const wasAtBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+
+    if (isTyping && wasAtBottom) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }, [isTyping]);
+
+  // Detect scroll to top for loading more messages
+  const handleScroll = useCallback(() => {
+    const container = scrollContainerRef.current;
+    if (!container || !hasMore || isLoadingMore || !onLoadMore) return;
+
+    // When scrolled near the top (within 50px), load more
+    if (container.scrollTop < 50) {
+      prevScrollHeight.current = container.scrollHeight;
+      onLoadMore();
+    }
+  }, [hasMore, isLoadingMore, onLoadMore]);
 
   if (isLoading) {
     return (
@@ -65,8 +122,22 @@ export default function ChatMessageList({
   }
 
   return (
-    <ScrollArea className="flex-1 px-4 py-4">
-      <div className="space-y-4" ref={scrollRef}>
+    <div
+      ref={scrollContainerRef}
+      onScroll={handleScroll}
+      className="flex-1 overflow-y-auto px-4 py-4 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent hover:scrollbar-thumb-white/30"
+    >
+      <div className="space-y-4">
+        {/* Loading more indicator at top */}
+        {isLoadingMore && (
+          <div className="flex justify-center py-2">
+            <Loader2 className="w-5 h-5 text-purple-400 animate-spin" />
+          </div>
+        )}
+
+        {/* Load more trigger area */}
+        <div ref={topRef} className="h-1" />
+
         <AnimatePresence mode="popLayout">
           {messages.map((message) => (
             <ChatMessage
@@ -83,6 +154,6 @@ export default function ChatMessageList({
         {/* Anchor for auto-scroll */}
         <div ref={bottomRef} />
       </div>
-    </ScrollArea>
+    </div>
   );
 }

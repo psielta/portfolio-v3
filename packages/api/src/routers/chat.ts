@@ -328,4 +328,74 @@ export const chatRouter = router({
 
 		return count;
 	}),
+
+	// Get messages with cursor-based pagination (newest first, for infinite scroll up)
+	getMessages: protectedProcedure
+		.input(
+			z.object({
+				conversationId: z.string(),
+				cursor: z.string().optional(), // Message ID to paginate from
+				limit: z.number().min(1).max(50).default(20),
+			})
+		)
+		.query(async ({ ctx, input }) => {
+			// Verify access
+			const conversation = await prisma.conversation.findUnique({
+				where: { id: input.conversationId },
+			});
+
+			if (!conversation) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "Conversation not found",
+				});
+			}
+
+			const isParticipant = conversation.userId === ctx.session.user.id;
+			const isAdmin = ctx.session.user.isAdmin;
+
+			if (!isParticipant && !isAdmin) {
+				throw new TRPCError({
+					code: "FORBIDDEN",
+					message: "Not authorized",
+				});
+			}
+
+			// Fetch messages with cursor-based pagination
+			// We fetch newest messages first (desc), then reverse for display
+			const messages = await prisma.message.findMany({
+				where: {
+					conversationId: input.conversationId,
+					isDeleted: false,
+				},
+				take: input.limit + 1, // Fetch one extra to check if there are more
+				...(input.cursor && {
+					cursor: { id: input.cursor },
+					skip: 1, // Skip the cursor itself
+				}),
+				orderBy: { createdAt: 'desc' },
+				include: {
+					sender: {
+						select: {
+							id: true,
+							name: true,
+							email: true,
+							image: true,
+						},
+					},
+				},
+			});
+
+			let nextCursor: string | undefined = undefined;
+			if (messages.length > input.limit) {
+				const nextItem = messages.pop();
+				nextCursor = nextItem?.id;
+			}
+
+			return {
+				messages: messages.reverse(), // Reverse to show oldest first in the batch
+				nextCursor,
+				hasMore: !!nextCursor,
+			};
+		}),
 });

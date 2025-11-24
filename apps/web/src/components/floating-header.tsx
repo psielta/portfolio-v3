@@ -38,8 +38,7 @@ export function FloatingHeader() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                    {/* {'<'}Portfolio {'/>'} */}
-                    Title
+                     &lt;Portfolio /&gt;
                   </span>
                   <motion.div
                     className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"
@@ -279,33 +278,21 @@ export function FloatingHeader() {
         </motion.div>
       </motion.div>
 
-      {/* CTA Flutuante - ao lado do drawer */}
+      {/* CTA Flutuante - ao lado dos botões de engrenagem e chat */}
       <motion.div
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1, duration: 0.5 }}
-        className="fixed bottom-8 right-32 z-50 hidden md:block"
+        className="fixed bottom-8 right-44 z-30 hidden lg:block"
       >
         <Link href="/projects">
           <motion.div
-            whileHover={{ scale: 1.05, x: -2 }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="group relative px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-white font-semibold shadow-lg shadow-purple-500/50 hover:shadow-purple-500/70 transition-all flex items-center gap-2 cursor-pointer"
+            className="group relative px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-white font-semibold shadow-lg shadow-purple-500/50 hover:shadow-purple-500/70 transition-all flex items-center gap-2 cursor-pointer overflow-hidden"
           >
             <span>Ver Projetos</span>
             <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-
-            {/* Efeito de pulso */}
-            <motion.div
-              className="absolute inset-0 rounded-full bg-white"
-              initial={{ scale: 1, opacity: 0.5 }}
-              animate={{ scale: 1.5, opacity: 0 }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: 'easeOut',
-              }}
-            />
           </motion.div>
         </Link>
       </motion.div>

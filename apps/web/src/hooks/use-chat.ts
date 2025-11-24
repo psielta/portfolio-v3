@@ -27,7 +27,7 @@ export function useChat(conversationId: string | null) {
     const channelName = `chat:${conversationId}`;
 
     // Subscribe to new messages
-    const unsubscribe = subscribeToChannel(
+    const unsubscribeMessages = subscribeToChannel(
       channelName,
       'message',
       (message: Ably.Message) => {
@@ -42,10 +42,27 @@ export function useChat(conversationId: string | null) {
       }
     );
 
+    // Subscribe to read receipts
+    const unsubscribeReadReceipts = subscribeToChannel(
+      channelName,
+      'read-receipt',
+      (message: Ably.Message) => {
+        const { readBy } = message.data as { readBy: string };
+        // Update messages sent by the current user to READ status
+        // (because the other user read them)
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.senderId !== readBy ? { ...msg, status: 'READ' as const } : msg
+          )
+        );
+      }
+    );
+
     setIsConnected(true);
 
     return () => {
-      unsubscribe();
+      unsubscribeMessages();
+      unsubscribeReadReceipts();
       setIsConnected(false);
     };
   }, [conversationId, session]);

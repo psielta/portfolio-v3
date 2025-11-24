@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare } from 'lucide-react';
 import type { Session } from '@portfolio/auth';
 import ConversationList from '@/components/chat/admin/conversation-list';
 import AdminChatPanel from '@/components/chat/admin/admin-chat-panel';
+import { enterPresence, leavePresence } from '@/lib/ably-client';
 
 interface AdminChatContentProps {
   session: Session;
@@ -14,14 +15,22 @@ interface AdminChatContentProps {
 export default function AdminChatContent({ session }: AdminChatContentProps) {
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
 
+  // Enter global admin presence channel so users can see admin is online
+  useEffect(() => {
+    enterPresence('presence:admin', { userId: session.user.id });
+    return () => {
+      leavePresence('presence:admin');
+    };
+  }, [session.user.id]);
+
   return (
-    <div className="min-h-screen py-8 px-4">
-      <div className="max-w-7xl mx-auto">
+    <div className="h-screen flex flex-col overflow-hidden py-8 px-4">
+      <div className="max-w-7xl mx-auto w-full flex flex-col flex-1 min-h-0">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-6 flex-shrink-0"
         >
           <div className="flex items-center gap-3 mb-2">
             <div className="p-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg">
@@ -37,13 +46,13 @@ export default function AdminChatContent({ session }: AdminChatContentProps) {
         </motion.div>
 
         {/* Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-200px)]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-0">
           {/* Left: Conversation List */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
-            className="lg:col-span-1"
+            className="lg:col-span-1 min-h-0"
           >
             <ConversationList
               activeConversationId={activeConversationId}
@@ -56,7 +65,7 @@ export default function AdminChatContent({ session }: AdminChatContentProps) {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="lg:col-span-2"
+            className="lg:col-span-2 min-h-0"
           >
             {activeConversationId ? (
               <AdminChatPanel

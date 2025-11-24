@@ -1,15 +1,5 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  User,
-  LogOut,
-  LogIn,
-  UserCircle
-} from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { authClient, useSession } from '@/lib/auth-client';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +9,16 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
+import { authClient, useSession } from '@/lib/auth-client';
+import { motion } from 'framer-motion';
+import {
+  LogIn,
+  LogOut,
+  MessageCircle,
+  UserCircle
+} from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 export default function UserMenu() {
@@ -121,6 +121,20 @@ export default function UserMenu() {
             <span>Meu Perfil</span>
           </Link>
         </DropdownMenuItem>
+
+        {session.user?.isAdmin ? (
+          <>
+          <DropdownMenuItem asChild>
+            <Link
+              href="/admin/chat"
+              className="flex items-center gap-3 px-3 py-2 text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-all cursor-pointer"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Chat Admin</span>
+            </Link>
+          </DropdownMenuItem>
+          </>
+        ) : null}
 
         <DropdownMenuSeparator className="bg-white/10 my-2" />
 
