@@ -8,6 +8,8 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  comments      Comment[] @relation("UserComments")
+  commentLikes  CommentLike[] @relation("UserCommentLikes")
 
   @@unique([email])
   @@map("user")

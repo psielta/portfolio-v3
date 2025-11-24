@@ -5,6 +5,7 @@ import { ArticleLayout } from '@/components/blog/article-layout';
 import { mdxComponents } from '@/components/blog/mdx-components';
 import { getArticleBySlug, getArticleSlugs, getRelatedArticles } from '@/lib/blog';
 import { ArticleCard } from '@/components/blog/article-card';
+import CommentsSection from '@/components/blog/comments/comments-section';
 
 interface ArticlePageProps {
   params: Promise<{
@@ -90,6 +91,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </section>
         )}
       </ArticleLayout>
+
+      {/* Comments Section */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <CommentsSection articleSlug={article.slug} />
+      </div>
 
       {/* Schema.org structured data for SEO */}
       <script

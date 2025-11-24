@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { MessageSquare } from 'lucide-react';
 import { formatDate } from '@/lib/format-date';
 
 interface ArticleCardProps {
@@ -14,9 +15,10 @@ interface ArticleCardProps {
     readingTime?: string;
     tags?: string[];
   };
+  commentCount?: number;
 }
 
-export function ArticleCard({ article }: ArticleCardProps) {
+export function ArticleCard({ article, commentCount }: ArticleCardProps) {
   return (
     <motion.article
       whileHover={{ scale: 1.02, y: -5 }}
@@ -41,6 +43,15 @@ export function ArticleCard({ article }: ArticleCardProps) {
               <>
                 <span className="text-white/30">•</span>
                 <span>{article.readingTime}</span>
+              </>
+            )}
+            {commentCount !== undefined && commentCount > 0 && (
+              <>
+                <span className="text-white/30">•</span>
+                <span className="flex items-center gap-1">
+                  <MessageSquare className="w-3 h-3" />
+                  {commentCount}
+                </span>
               </>
             )}
           </div>

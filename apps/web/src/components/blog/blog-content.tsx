@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArticleCard } from '@/components/blog/article-card';
+import { ArticleCardWithComments } from '@/components/blog/article-card-with-comments';
 import type { Article } from '@/lib/blog';
 
 interface BlogContentProps {
@@ -118,7 +118,7 @@ export function BlogContent({ articles, featuredArticles, tags }: BlogContentPro
                   whileInView="visible"
                   viewport={{ once: false }}
                 >
-                  <ArticleCard article={article} />
+                  <ArticleCardWithComments article={article} />
                 </motion.div>
               ))}
             </motion.div>
@@ -240,7 +240,7 @@ export function BlogContent({ articles, featuredArticles, tags }: BlogContentPro
                   whileInView="visible"
                   viewport={{ once: false }}
                 >
-                  <ArticleCard article={article} />
+                  <ArticleCardWithComments article={article} />
                 </motion.div>
               ))}
             </motion.div>

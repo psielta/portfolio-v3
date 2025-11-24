@@ -1,0 +1,49 @@
+model Comment {
+  id          String   @id @default(cuid())
+  content     String
+  articleSlug String
+
+  // User relationship
+  userId      String
+  user        User     @relation("UserComments", fields: [userId], references: [id], onDelete: Cascade)
+
+  // Nested comments (replies/threads)
+  parentId    String?
+  parent      Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     Comment[] @relation("CommentReplies")
+
+  // Likes
+  likes       CommentLike[]
+  likeCount   Int      @default(0)
+
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Flags
+  isDeleted   Boolean  @default(false)
+  isEdited    Boolean  @default(false)
+
+  @@index([articleSlug])
+  @@index([userId])
+  @@index([parentId])
+  @@map("comment")
+}
+
+model CommentLike {
+  id        String   @id @default(cuid())
+
+  // Relationships
+  commentId String
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  userId    String
+  user      User     @relation("UserCommentLikes", fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([commentId, userId])
+  @@index([commentId])
+  @@index([userId])
+  @@map("comment_like")
+}
