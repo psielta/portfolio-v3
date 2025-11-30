@@ -49,7 +49,7 @@ const skills = {
     'TypeScript', 'React', 'Next.js', 'Angular', 'Ionic', 'Expo', 'Three.js', 'Framer Motion', 'TailwindCSS'
   ],
   'Backend': [
-    'C#', 'ASP.NET Core', '.NET 8', '.NET Framework', 'Go', 'Node.js', 'tRPC', 'Prisma'
+    'Java', 'Spring Boot', 'C#', 'ASP.NET Core', '.NET 8', '.NET Framework', 'Go', 'Node.js', 'tRPC', 'Prisma'
   ],
   'Desktop': [
     'Delphi 10.1', 'Windows Forms', 'FastReport', 'ACBr'

@@ -57,6 +57,21 @@ export const projects: Project[] = [
     updatedAt: '2025-11-21T01:23:50Z',
     category: 'Desktop',
   },
+  {
+    id: 'linve',
+    name: 'Linve',
+    description: 'Sistema de gestão multi-tenant para lanchonetes, pizzarias e estabelecimentos de delivery, desenvolvido com Spring Boot (backend) e Angular (frontend).',
+    url: 'https://github.com/psielta/linve',
+    stars: 0,
+    forks: 0,
+    language: 'Java',
+    languageColor: LANGUAGE_COLORS['Java'],
+    technologies: ['Java', 'Spring Boot', 'Spring Security', 'Angular', 'TypeScript', 'PrimeNG', 'SQLite', 'JWT'],
+    createdAt: '2025-11-30T00:00:00Z',
+    updatedAt: '2025-11-30T00:00:00Z',
+    highlight: true,
+    category: 'Full Stack',
+  },
   // Adicione novos projetos aqui seguindo a mesma estrutura
 ];
 
