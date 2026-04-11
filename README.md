@@ -533,39 +533,24 @@ Verifique se:
 
 ## 🚀 Deploy
 
-Para deploy em produção:
+O projeto inclui setup completo para deploy em VPS Ubuntu com PM2 + Nginx + HTTPS.
 
-1. Configure as variáveis de ambiente no seu provedor de hospedagem:
-   - `BETTER_AUTH_SECRET` e `BETTER_AUTH_URL`
-   - `DATABASE_URL` (use Turso para produção)
-   - `ABLY_API_KEY` (para chat em tempo real)
-   - `ADMIN_EMAIL` e `ADMIN_PASSWORD` (opcional)
-   - `EMAIL_*` (se usar formulário de contato)
+Consulte o guia completo em **[DEPLOYMENT.md](./DEPLOYMENT.md)**.
 
-2. Execute o build:
+Resumo rapido:
+
 ```bash
-npm run build
+# Na VPS, apos clonar e configurar .env.production:
+cd /var/www/portfolio-v3/app
+bash scripts/deploy.sh
 ```
 
-3. Execute as migrações do banco:
-```bash
-npm run db:push
-npm run db:seed  # Opcional: criar admin
-```
-
-4. Inicie a aplicação:
-```bash
-npm start
-```
-
-**Provedores recomendados**:
-- **Vercel** (Next.js + configuração automática)
-- **Railway** (fácil setup de banco de dados)
-- **Render** (deploy full-stack)
-
-**Banco de dados em produção**:
-- Use [Turso](https://turso.tech) (SQLite na edge, gratuito até 500 databases)
-- Alternativas: Neon, PlanetScale, Supabase
+**Arquivos de operacao incluidos**:
+- `ecosystem.config.cjs` - Configuracao PM2
+- `scripts/deploy.sh` - Deploy idempotente com smoke test
+- `scripts/backup-sqlite.sh` - Backup diario do SQLite
+- `docs/ops-guide.md` - Guia operacional
+- `GET /api/health` - Health check (app + banco)
 
 ## 📈 Roadmap
 
