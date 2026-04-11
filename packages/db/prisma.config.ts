@@ -2,9 +2,14 @@ import path from "node:path";
 import { defineConfig, env } from "prisma/config";
 import dotenv from "dotenv";
 
-dotenv.config({
-	path: "../../apps/web/.env",
-});
+// Prioridade: .env.production > .env.local > .env
+for (const file of [".env.production", ".env.local", ".env"]) {
+	const p = path.resolve("../../apps/web", file);
+	if (require("fs").existsSync(p)) {
+		dotenv.config({ path: p });
+		break;
+	}
+}
 
 export default defineConfig({
 	schema: path.join("prisma", "schema"),

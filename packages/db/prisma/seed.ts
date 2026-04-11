@@ -6,19 +6,20 @@ import { existsSync } from 'fs';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 
-// Load environment variables from apps/web/.env or .env.local
-const envLocalPath = resolve(process.cwd(), '../../apps/web/.env.local');
-const envPath = resolve(process.cwd(), '../../apps/web/.env');
+// Prioridade: .env.production > .env.local > .env
+const envFiles = ['.env.production', '.env.local', '.env'];
+const loaded = envFiles.find((file) => {
+  const p = resolve(process.cwd(), '../../apps/web', file);
+  if (existsSync(p)) {
+    dotenv.config({ path: p });
+    console.log(`📝 Loading env from ${file}`);
+    return true;
+  }
+  return false;
+});
 
-// Try .env.local first, then fall back to .env
-if (existsSync(envLocalPath)) {
-  dotenv.config({ path: envLocalPath });
-  console.log('📝 Loading env from .env.local');
-} else if (existsSync(envPath)) {
-  dotenv.config({ path: envPath });
-  console.log('📝 Loading env from .env');
-} else {
-  console.warn('⚠️  No .env or .env.local file found');
+if (!loaded) {
+  console.warn('⚠️  No .env file found');
 }
 
 const adapter = new PrismaLibSql({

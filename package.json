@@ -15,7 +15,9 @@
     "db:push": "turbo -F @portfolio/db db:push",
     "db:studio": "turbo -F @portfolio/db db:studio",
     "db:generate": "turbo -F @portfolio/db db:generate",
-    "db:migrate": "turbo -F @portfolio/db db:migrate"
+    "db:migrate": "turbo -F @portfolio/db db:migrate",
+    "db:migrate:deploy": "turbo -F @portfolio/db db:migrate:deploy",
+    "db:seed": "turbo -F @portfolio/db db:seed"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",
