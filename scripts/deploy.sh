@@ -24,9 +24,9 @@ echo "[1/7] Atualizando codigo..."
 git fetch origin "$BRANCH"
 git reset --hard "origin/$BRANCH"
 
-# 3. Instalar dependencias (ci = limpo, sem alterar lock)
+# 3. Instalar dependencias (ci = limpo, inclui devDeps para build)
 echo "[2/7] Instalando dependencias..."
-npm ci --omit=dev 2>&1 | tail -3
+npm ci 2>&1 | tail -3
 
 # 4. Gerar Prisma Client
 echo "[3/7] Gerando Prisma Client..."
