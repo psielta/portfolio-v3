@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, Linkedin, Mail, Menu, X } from 'lucide-react';
+import { ExternalLink, Mail, Menu, X } from 'lucide-react';
+import { Github, Linkedin } from '@/components/icons/brand-icons';
 import Link from 'next/link';
 import { useState } from 'react';
 

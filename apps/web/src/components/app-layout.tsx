@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { CallBackProps, Step } from 'react-joyride';
-import Joyride, { STATUS } from 'react-joyride';
+import { Joyride, STATUS } from 'react-joyride';
 import UserMenu from './user-menu';
 
 const TOUR_VIEWED_KEY = 'portfolio_tour_viewed';

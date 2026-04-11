@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { projects } from '@/data/projects';
 import { motion } from 'framer-motion';
-import { Code2, ExternalLink, Filter, Github, Search } from 'lucide-react';
+import { Code2, ExternalLink, Filter, Search } from 'lucide-react';
+import { Github } from '@/components/icons/brand-icons';
 import { useState } from 'react';
 
 export default function ProjectsPage() {

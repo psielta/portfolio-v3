@@ -7,9 +7,7 @@ import {
   Building2,
   Code2,
   Database,
-  Github,
   Globe,
-  Linkedin,
   Mail,
   MapPin,
   Monitor,
@@ -17,6 +15,7 @@ import {
   Sparkles,
   User
 } from 'lucide-react';
+import { Github, Linkedin } from '@/components/icons/brand-icons';
 import Link from 'next/link';
 
 const experiences = [

@@ -4,8 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Mail,
-  Github,
-  Linkedin,
   Send,
   MapPin,
   Globe,
@@ -21,6 +19,7 @@ import {
   PenTool,
   Star
 } from 'lucide-react';
+import { Github, Linkedin } from '@/components/icons/brand-icons';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
