@@ -5,7 +5,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import type { CallBackProps, Step } from 'react-joyride';
+import type { EventData, Step } from 'react-joyride';
 import { Joyride, STATUS } from 'react-joyride';
 import UserMenu from './user-menu';
 
@@ -35,7 +35,7 @@ const tourSteps: Step[] = [
   {
     target: '#nav-wizard',
     content: 'Comece aqui! O Wizard apresenta o portfolio de forma interativa e guiada.',
-    disableBeacon: true,
+    skipBeacon: true,
     placement: 'bottom',
     title: 'Passo 1 de 8',
     locale: { next: 'Próximo', skip: 'Pular' },
@@ -115,7 +115,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
     }
   }, [isHomePage, isWizardPage]);
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
+  const handleJoyrideEvent = (data: EventData) => {
     const { status } = data;
     const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
@@ -138,21 +138,20 @@ export function AppLayout({ children, title }: AppLayoutProps) {
         steps={tourSteps}
         run={runTour}
         continuous
-        showProgress={false}
-        showSkipButton
         scrollToFirstStep
-        disableOverlayClose
-        hideCloseButton
-        callback={handleJoyrideCallback}
+        onEvent={handleJoyrideEvent}
+        options={{
+          primaryColor: '#3b82f6',
+          textColor: '#ffffff',
+          backgroundColor: 'rgba(0, 0, 0, 0.95)',
+          overlayColor: 'rgba(0, 0, 0, 0.6)',
+          arrowColor: 'rgba(0, 0, 0, 0.95)',
+          zIndex: 10000,
+          overlayClickAction: false,
+          buttons: ['back', 'primary', 'skip'],
+          showProgress: false,
+        }}
         styles={{
-          options: {
-            primaryColor: '#3b82f6',
-            textColor: '#ffffff',
-            backgroundColor: 'rgba(0, 0, 0, 0.95)',
-            overlayColor: 'rgba(0, 0, 0, 0.6)',
-            arrowColor: 'rgba(0, 0, 0, 0.95)',
-            zIndex: 10000,
-          },
           tooltip: {
             borderRadius: 12,
             padding: 20,
@@ -167,7 +166,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
             fontSize: 14,
             lineHeight: 1.6,
           },
-          buttonNext: {
+          buttonPrimary: {
             background: 'linear-gradient(to right, #3b82f6, #9333ea)',
             borderRadius: 8,
             padding: '10px 20px',
@@ -198,9 +197,6 @@ export function AppLayout({ children, title }: AppLayoutProps) {
           next: 'Próximo',
           open: 'Abrir',
           skip: 'Pular tour',
-        }}
-        floaterProps={{
-          disableAnimation: false,
         }}
       />
 
