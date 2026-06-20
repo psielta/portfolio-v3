@@ -59,14 +59,6 @@ export function BlogContent({ articles, featuredArticles, tags }: BlogContentPro
 
   return (
     <div className="relative">
-      {/* Background gradient */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent pointer-events-none"
-      />
-
       <div className="relative mx-auto max-w-7xl">
         {/* Header */}
         <motion.header
@@ -253,7 +245,7 @@ export function BlogContent({ articles, featuredArticles, tags }: BlogContentPro
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
           whileHover={{ scale: 1.02 }}
-          className="mt-16 p-8 rounded-xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-white/10"
+          className="mt-16 p-8 rounded-xl bg-white/5 border border-white/10"
         >
           <div className="text-center">
             <h3 className="mb-2 text-2xl font-bold text-white">

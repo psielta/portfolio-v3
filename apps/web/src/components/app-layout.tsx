@@ -12,7 +12,6 @@ import UserMenu from './user-menu';
 const TOUR_VIEWED_KEY = 'portfolio_tour_viewed';
 
 const navigation = [
-  { name: 'Wizard', href: '/wizard', id: 'nav-wizard' },
   { name: 'Blog', href: '/blog', id: 'nav-blog' },
   { name: 'Projetos', href: '/projects', id: 'nav-projects' },
   { name: 'Sobre', href: '/about', id: 'nav-about' },
@@ -33,60 +32,53 @@ interface AppLayoutProps {
 
 const tourSteps: Step[] = [
   {
-    target: '#nav-wizard',
-    content: 'Comece aqui! O Wizard apresenta o portfolio de forma interativa e guiada.',
-    skipBeacon: true,
-    placement: 'bottom',
-    title: 'Passo 1 de 8',
-    locale: { next: 'Próximo', skip: 'Pular' },
-  },
-  {
     target: '#nav-blog',
     content: 'Leia artigos sobre desenvolvimento web, arquitetura de software e tecnologias modernas.',
+    skipBeacon: true,
     placement: 'bottom',
-    title: 'Passo 2 de 8',
-    locale: { back: 'Anterior', next: 'Próximo', skip: 'Pular' },
+    title: 'Passo 1 de 7',
+    locale: { next: 'Próximo', skip: 'Pular' },
   },
   {
     target: '#nav-projects',
     content: 'Explore meus projetos e trabalhos desenvolvidos com tecnologias modernas.',
     placement: 'bottom',
-    title: 'Passo 3 de 8',
+    title: 'Passo 2 de 7',
     locale: { back: 'Anterior', next: 'Próximo', skip: 'Pular' },
   },
   {
     target: '#nav-about',
     content: 'Conheça mais sobre mim, minhas habilidades e experiência profissional.',
     placement: 'bottom',
-    title: 'Passo 4 de 8',
+    title: 'Passo 3 de 7',
     locale: { back: 'Anterior', next: 'Próximo', skip: 'Pular' },
   },
   {
     target: '#nav-uses',
     content: 'Descubra as ferramentas e tecnologias que uso no dia a dia para desenvolvimento.',
     placement: 'bottom',
-    title: 'Passo 5 de 8',
+    title: 'Passo 4 de 7',
     locale: { back: 'Anterior', next: 'Próximo', skip: 'Pular' },
   },
   {
     target: '#nav-entertainment',
     content: 'Veja minhas recomendações de filmes, séries e podcasts sobre tecnologia e cultura.',
     placement: 'bottom',
-    title: 'Passo 6 de 8',
+    title: 'Passo 5 de 7',
     locale: { back: 'Anterior', next: 'Próximo', skip: 'Pular' },
   },
   {
     target: '#nav-contact',
     content: 'Entre em contato para projetos, colaborações ou oportunidades.',
     placement: 'bottom',
-    title: 'Passo 7 de 8',
+    title: 'Passo 6 de 7',
     locale: { back: 'Anterior', next: 'Próximo', skip: 'Pular' },
   },
   {
     target: '#nav-orbits',
     content: 'Visualize mecânica orbital 3D com cálculos precisos baseados em dados da NASA.',
     placement: 'bottom',
-    title: 'Passo 8 de 8',
+    title: 'Passo 7 de 7',
     locale: { back: 'Anterior', last: 'Finalizar', skip: 'Pular' },
   },
 ];
@@ -94,12 +86,11 @@ const tourSteps: Step[] = [
 export function AppLayout({ children, title }: AppLayoutProps) {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
-  const isWizardPage = pathname === '/wizard';
   const [runTour, setRunTour] = useState(false);
 
   useEffect(() => {
-    // Não executar tour na home ou wizard
-    if (isHomePage || isWizardPage) {
+    // Não executar tour na home
+    if (isHomePage) {
       return;
     }
 
@@ -113,7 +104,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [isHomePage, isWizardPage]);
+  }, [isHomePage]);
 
   const handleJoyrideEvent = (data: EventData) => {
     const { status } = data;

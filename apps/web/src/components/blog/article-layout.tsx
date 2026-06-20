@@ -24,14 +24,6 @@ export function ArticleLayout({ article, children }: ArticleLayoutProps) {
       transition={{ duration: 0.5 }}
       className="relative"
     >
-        {/* Background gradient effect */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent pointer-events-none"
-        />
-
         <div className="relative mx-auto max-w-4xl">
           {/* Breadcrumb */}
           <motion.nav

@@ -32,7 +32,7 @@ export function FloatingHeader() {
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
             >
-              <Link href="/wizard?from=home" className="group flex items-center gap-2">
+              <Link href="/" className="group flex items-center gap-2">
                 <motion.div
                   className="relative"
                   whileHover={{ scale: 1.05 }}
