@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ExternalLink, Star, GitFork, Calendar, Code2 } from 'lucide-react';
+import { ExternalLink, Star, GitFork, Calendar, Globe } from 'lucide-react';
+import Image from 'next/image';
 import type { Project } from '@/data/projects';
 import { formatDate } from '@/data/projects';
 import { useState } from 'react';
@@ -36,9 +37,22 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         {/* Header do card */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1 relative">
-            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
-              {project.name}
-            </h3>
+            <div className="flex items-center gap-3 mb-2">
+              {project.logo && (
+                <div className="shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-white/5 border border-white/10 overflow-hidden">
+                  <Image
+                    src={project.logo}
+                    alt={`Logo ${project.name}`}
+                    width={40}
+                    height={40}
+                    className="object-contain p-1"
+                  />
+                </div>
+              )}
+              <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                {project.name}
+              </h3>
+            </div>
             <div
               className="relative"
               onMouseEnter={() => setShowTooltip(true)}
@@ -126,16 +140,30 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           </div>
         )}
 
-        {/* Botão de ação */}
-        <a
-          href={project.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-sm font-semibold rounded-lg transition-all group/btn"
-        >
-          <span>Ver no GitHub</span>
-          <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-        </a>
+        {/* Botões de ação */}
+        <div className="flex flex-wrap gap-2">
+          {project.demoUrl && (
+            <a
+              href={project.demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/15 text-white text-sm font-semibold rounded-lg border border-white/10 transition-all group/demo"
+            >
+              <Globe className="w-4 h-4" />
+              <span>Ver ao vivo</span>
+              <ExternalLink className="w-4 h-4 group-hover/demo:translate-x-1 transition-transform" />
+            </a>
+          )}
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-sm font-semibold rounded-lg transition-all group/btn"
+          >
+            <span>GitHub</span>
+            <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+          </a>
+        </div>
 
       </div>
     </motion.div>

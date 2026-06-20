@@ -3,6 +3,8 @@ export interface Project {
   name: string;
   description: string;
   url: string;
+  demoUrl?: string;
+  logo?: string;
   stars: number;
   forks: number;
   language: string;
@@ -28,6 +30,77 @@ const LANGUAGE_COLORS: Record<string, string> = {
 };
 
 export const projects: Project[] = [
+  {
+    id: 'ra',
+    name: 'Ra',
+    description:
+      'Portfolio de mídia com identidade egípcia: grava ou envia músicas e vídeos, acompanha a conversão em tempo real e reproduz no navegador via HLS. Pipeline assíncrono com Next.js, RabbitMQ, worker .NET/FFmpeg, Redis Pub/Sub e Nginx.',
+    url: 'https://github.com/psielta/ra',
+    demoUrl: 'https://ra.mateussalgueiro.com.br/',
+    logo: '/projects/ra.svg',
+    stars: 0,
+    forks: 0,
+    language: 'TypeScript / C#',
+    languageColor: LANGUAGE_COLORS['TypeScript'],
+    technologies: ['Next.js', 'React', 'Prisma', 'PostgreSQL', 'RabbitMQ', 'Redis', 'FFmpeg', '.NET 10', 'hls.js'],
+    createdAt: '2026-01-01T00:00:00Z',
+    updatedAt: '2026-06-20T00:00:00Z',
+    highlight: true,
+    category: 'Full Stack',
+  },
+  {
+    id: 'anubis',
+    name: 'Anubis',
+    description:
+      'Biblioteca digital pessoal inspirada em plataformas de leitura: importa PDFs, organiza coleções, lê com progresso salvo e usa IA (Gemini) como companheiro de estudo — perguntas, resumos e flashcards em streaming.',
+    url: 'https://github.com/psielta/anubis',
+    demoUrl: 'https://mateussalgueiro.com.br/',
+    logo: '/projects/anubis.svg',
+    stars: 0,
+    forks: 0,
+    language: 'Python / TypeScript',
+    languageColor: LANGUAGE_COLORS['Python'],
+    technologies: ['FastAPI', 'Angular', 'PostgreSQL', 'MinIO', 'SQLAlchemy', 'Gemini API', 'JWT'],
+    createdAt: '2026-01-01T00:00:00Z',
+    updatedAt: '2026-06-20T00:00:00Z',
+    highlight: true,
+    category: 'Full Stack',
+  },
+  {
+    id: 'osiris',
+    name: 'Osiris',
+    description:
+      'SaaS de finanças pessoais multi-tenant com domínio financeiro completo: contas, cartões, compras, faturas e contas a pagar. Web em ASP.NET Core MVC com HTMX e API JWT separada para o app mobile Kotlin Multiplatform.',
+    url: 'https://github.com/psielta/osiris',
+    demoUrl: 'https://osiris.mateussalgueiro.com.br/',
+    logo: '/projects/osiris.svg',
+    stars: 0,
+    forks: 0,
+    language: 'C#',
+    languageColor: LANGUAGE_COLORS['C#'],
+    technologies: ['ASP.NET Core', 'MediatR', 'EF Core', 'PostgreSQL', 'Tailwind CSS', 'HTMX', 'JWT API'],
+    createdAt: '2026-01-01T00:00:00Z',
+    updatedAt: '2026-06-20T00:00:00Z',
+    highlight: true,
+    category: 'Full Stack',
+  },
+  {
+    id: 'thoth',
+    name: 'Thoth',
+    description:
+      'App desktop full-stack para organizar, versionar e acompanhar prompts em Markdown usados com agentes como Claude Code e Codex. Board Kanban, workflow por fases, terminais PowerShell integrados, Monaco Editor e assistente IA com Gemini.',
+    url: 'https://github.com/psielta/thoth',
+    logo: '/projects/thoth.svg',
+    stars: 0,
+    forks: 0,
+    language: 'C# / TypeScript',
+    languageColor: LANGUAGE_COLORS['C#'],
+    technologies: ['ASP.NET Core', 'React', 'SignalR', 'PostgreSQL', 'TipTap', 'Monaco Editor', 'xterm.js', 'Gemini API'],
+    createdAt: '2026-01-01T00:00:00Z',
+    updatedAt: '2026-06-20T00:00:00Z',
+    highlight: true,
+    category: 'Desktop',
+  },
   {
     id: 'basicerp',
     name: 'BasicERP',
@@ -56,21 +129,6 @@ export const projects: Project[] = [
     createdAt: '2025-11-20T06:06:29Z',
     updatedAt: '2025-11-21T01:23:50Z',
     category: 'Desktop',
-  },
-  {
-    id: 'linve',
-    name: 'Linve',
-    description: 'Sistema de gestão multi-tenant para lanchonetes, pizzarias e estabelecimentos de delivery, desenvolvido com Spring Boot (backend) e Angular (frontend).',
-    url: 'https://github.com/psielta/linve',
-    stars: 0,
-    forks: 0,
-    language: 'Java',
-    languageColor: LANGUAGE_COLORS['Java'],
-    technologies: ['Java', 'Spring Boot', 'Spring Security', 'Angular', 'TypeScript', 'PrimeNG', 'SQLite', 'JWT'],
-    createdAt: '2025-11-30T00:00:00Z',
-    updatedAt: '2025-11-30T00:00:00Z',
-    highlight: true,
-    category: 'Full Stack',
   },
   // Adicione novos projetos aqui seguindo a mesma estrutura
 ];
